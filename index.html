@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/style.css" />
+    <title></title>
+</head>
+<body>
+    <div id="drag-region"></div>
+    <div id="modal-bg">
+        <div id="modal-container"></div>
+    </div>
+    <section id="sidebar">
+        <div id="controls">
+            <a class="btn" id="prevbtn">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 14">
+                    <path d="M0.54582 5.66479L5.7505 0.391072C6.26511 -0.130358 7.09944 -0.130357 7.61405 0.391073C8.12865 0.912503 8.12865 1.75791 7.61405 2.27934L2.95518 7L7.61405 11.7207C8.12865 12.2421 8.12865 13.0875 7.61405 13.6089C7.09944 14.1304 6.26511 14.1304 5.7505 13.6089L0.545819 8.3352C-0.181941 7.59779 -0.181939 6.40221 0.54582 5.66479Z"/>
+                </svg>
+            </a>
+            <a class="btn" id="todaybtn">Today</a>
+            <a class="btn" id="nextbtn">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 14">
+                    <path d="M7.45418 8.33521L2.2495 13.6089C1.73489 14.1304 0.900557 14.1304 0.385953 13.6089C-0.128651 13.0875 -0.12865 12.2421 0.385953 11.7207L5.04482 7L0.385953 2.27934C-0.12865 1.75791 -0.128651 0.912502 0.385953 0.391072C0.900557 -0.130359 1.73489 -0.130358 2.2495 0.391072L7.45418 5.6648C8.18194 6.40221 8.18194 7.59779 7.45418 8.33521Z"/>
+                </svg>
+            </a>
+        </div>
+        <div>
+            <div id="smallcalendar"></div>
+        </div>
+        <div id="holidays">
+            <h3>Holidays</h3>
+        </div>
+    </section>
+    <section id="content">
+        <section id="topbar">
+            <h1 id="calendar-title"></h1>
+        </section>
+        <section id="weekdays"></section>
+        <table id="calendar"></table>
+    </main>
+    <script src="./src/calendar.js"></script>
+</body>
+</html>

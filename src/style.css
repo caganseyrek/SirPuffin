@@ -1,0 +1,219 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+:root {
+    --white: #FFFFFF;
+    --dark: #222222;
+    --accent: #40376E;
+    --border-color: #DCDCDC;
+    --not-current-color: #BDBDBD;
+    --not-current-bg: #F3F3F3;
+    --font-family: "Inter";
+    --line-height: 28px;
+    --letter-spacing: 0.15px;
+    --font-size: 17px;
+    --h1-font-size: 34px;
+    --h2-font-size: 26px;
+    --h3-font-size: 17px;
+    --border-radius: 7px;
+}
+
+* {
+    cursor: default;
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+}
+
+body {
+    padding: 0px;
+    margin: 0px;
+    font-size: var(--font-size);
+    font-family: var(--font-family);
+    line-height: var(--line-height);
+    letter-spacing: var(--letter-spacing);
+    background-color: var(--white);
+    color: var(--dark);
+    display: flex;
+    flex-direction: row;
+    user-select: none;
+}
+
+body.darkmode {
+    --white: #222222;
+    --dark: #FFFFFF;
+    --border-color: #323232;
+    --not-current-color: #424242;
+    --not-current-bg: #0C0C0C;
+}
+
+div#drag-region {
+    -webkit-app-region: drag;
+    position: fixed;
+    right: 0px;
+    display: block;
+    width: calc(100vw - 280px);
+    height: 81px;
+}
+
+h1,
+h2,
+h3 {
+    line-height: normal;
+    padding: 0px;
+    margin: 0px;
+}
+
+.today {
+    background-color: var(--accent);
+    color: var(--white) !important;
+}
+
+.notcurrent {
+    color: var(--not-current-color) !important;
+    background-color: var(--not-current-bg);
+}
+
+.sc-notcurrent {
+    color: var(--not-current-color) !important;
+}
+
+.icon {
+    width: 16px;
+    height: 16px;
+    margin: auto;
+}
+
+.icon path {
+    fill: var(--dark);
+}
+
+.btn {
+    border-radius: var(--border-radius);
+    border: solid 1px var(--border-color);
+    min-width: 38px;
+    height: 38px;
+}
+
+.btn#todaybtn {
+    flex: 1;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon,
+.icon path,
+.btn {
+    cursor: pointer;
+}
+
+section#sidebar {
+    width: 280px;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    height: 100vh;
+}
+
+section#sidebar h3 {
+    margin-bottom: 10px;
+}
+
+div#controls {
+    column-gap: 5px;
+}
+
+div#smallcalendar {
+    display: grid;
+    grid-template-columns: repeat(7, calc(234px / 7));
+    grid-template-rows: repeat(7, calc(234px / 7));
+    column-gap: 1px;
+    row-gap: 1px;
+}
+
+div#smallcalendar div.sc-day {
+    border-radius: var(--border-radius);
+    width: calc(234px / 7);
+    height: calc(234px / 7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+}
+
+div#smallcalendar div.sc-day.header {
+    border-radius: var(--border-radius);
+    background-color: var(--not-current-bg);
+    color: var(--not-current-color);
+    font-weight: 600;
+}
+
+section#content {
+    width: calc(100vw - 280px);
+}
+
+section#topbar {
+    height: 81px;
+    padding: 20px;
+    box-sizing: border-box;
+    border-left: solid 1px var(--border-color);
+    justify-content: space-between;
+}
+
+section#topbar,
+section#topbar div,
+section#weekdays,
+div#controls,
+.btn,
+.icon {
+    display: flex;
+    align-items: center;
+    justify-self: center;
+}
+
+section#topbar h1 {
+    font-size: var(--h1-font-size);
+    font-weight: normal;
+}
+
+section#weekdays {
+    border-left: solid 1px var(--border-color);
+    border-top: solid 1px var(--border-color);
+}
+
+section#weekdays div {
+    height: 28px;
+    width: calc(100% / 7);
+    text-align: center;
+    font-weight: 600;
+}
+
+table {
+    width: 100%;
+    height: calc(100% - 110px);
+    border-collapse: collapse;
+}
+
+table tr:first-child {
+    border-left: solid 1px var(--border-color);
+}
+
+td {
+    vertical-align: top;
+    width: calc(100% / 7);
+    height: calc((100% - 28px) / 7);
+    border: solid 1px var(--border-color);
+}
+
+div.day-label {
+    float: right;
+    width: fit-content;
+    border-radius: var(--border-radius);
+    text-align: center;
+    margin: 5px;
+    padding: 3px 8px;
+    box-sizing: border-box;
+}
