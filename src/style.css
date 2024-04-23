@@ -46,6 +46,7 @@ body.darkmode {
     --not-current-bg: #0C0C0C;
 }
 
+/* Removed temporarily
 div#drag-region {
     -webkit-app-region: drag;
     position: fixed;
@@ -54,6 +55,7 @@ div#drag-region {
     width: calc(100vw - 280px);
     height: 81px;
 }
+*/
 
 h1,
 h2,
@@ -243,7 +245,7 @@ div#modal-container {
     width: 500px;
     padding: 20px;
     box-sizing: border-box;
-    margin: auto;
+    margin: 0px auto 30px auto;
 }
 
 div#modal-header {

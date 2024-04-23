@@ -31,7 +31,7 @@ function renderCalendar() {
 
 	//Get the date
 	const date = new Date();
-	
+
 	//Check if the user moved the calendar to previous or next months
 	if (currentMonthCounter !== 0) {
 		date.setMonth(new Date().getMonth() + currentMonthCounter);
@@ -61,7 +61,7 @@ function renderCalendar() {
 	//Get first days in selected month and next month
 	const firstDayInMonth = new Date(year, month, 1);
 	const firstDayInNextMonth = new Date(year, month + 1, 1);
-	
+
 	//Get number of days in selected month and next month
 	const daysInPrevMonth = new Date(year, month, 0).getDate();
 	const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -85,7 +85,7 @@ function renderCalendar() {
 	//Setup calendar title that shows selected month and year
 	const monthElement = document.createElement("b");
 	monthElement.textContent = monthString + " ";
-	
+
 	const yearElement = document.createElement("span");
 	yearElement.textContent = year.toString();
 
@@ -116,7 +116,7 @@ function renderCalendar() {
 	for (let row = 1; row <= 6; row++) {
 		//Create a table row
 		const calendarRow = document.createElement("tr");
-		
+
 		//Loop each column (day) in calendar
 		for (let column = 1; column <= 7; column++) {
 			//Create a td element for day, day label and day events
@@ -132,13 +132,13 @@ function renderCalendar() {
 			dayEvents.classList.add("day-event");
 
 			scDayElement.classList.add("sc-day");
-			
+
 			if (dayCount <= paddingDays) {
 				//Check if we are rendering padding days
 				//Render padding days in main calendar
 				dayLabel.textContent = (daysInPrevMonth - (paddingDays - dayCount)).toString();
 				dayElement.classList.add("notcurrent");
-				
+
 				//Render padding days in small calendar
 				scDayElement.textContent = (daysInPrevMonth - (paddingDays - dayCount)).toString();
 				scDayElement.classList.add("sc-notcurrent");
@@ -173,11 +173,11 @@ function renderCalendar() {
 					dayLabel.textContent = nextMonthString.slice(0, 3) + " " + nextMontDayCount.toString();
 				}
 				dayElement.classList.add("notcurrent");
-				
+
 				//Render next month's visible days in small calendar
 				scDayElement.textContent = nextMontDayCount.toString();
 				scDayElement.classList.add("sc-notcurrent");
-				
+
 				nextMontDayCount++;
 			}
 			dayCount++;
@@ -200,7 +200,7 @@ function renderCalendar() {
 function jumpToDate() {
 	const yearInputValue = document.getElementById("yearinput");
 	const monthInputValue = document.getElementById("monthdropdown");
-	
+
 	//Remove previous error prompts if there is any
 	const errorMessages = modalContainer.querySelectorAll("div.errorprompt");
 	errorMessages.forEach(element => {
@@ -251,13 +251,13 @@ function initButtons() {
 		currentMonthCounter++;
 		renderCalendar();
 	});
-	
+
 	//Decrease the month counter by 1 and re-render the calendar
 	document.getElementById("prevbtn").addEventListener("click", () => {
 		currentMonthCounter--;
 		renderCalendar();
 	});
-	
+
 	//Set month counter 0 to return to current month and re-render the calendar
 	document.getElementById("todaybtn").addEventListener("click", () => {
 		currentMonthCounter = 0;
@@ -339,7 +339,7 @@ function openModal(modalType, selectedDate = null) { //Selected date will be for
 		jumpButton.textContent = "Jump!";
 		jumpButton.addEventListener("click", () => { jumpToDate() });
 		selectionGrid.appendChild(jumpButton);
-		
+
 		//Append the grid to the modal-content element
 		modalContent.appendChild(selectionGrid);
 	}
