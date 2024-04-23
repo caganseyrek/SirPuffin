@@ -7,6 +7,7 @@
     --border-color: #DCDCDC;
     --not-current-color: #BDBDBD;
     --not-current-bg: #F3F3F3;
+    --modal-bg: rgba(34, 34, 34, 0.25);
     --font-family: "Inter";
     --line-height: 28px;
     --letter-spacing: 0.15px;
@@ -80,6 +81,10 @@ h3 {
     width: 16px;
     height: 16px;
     margin: auto;
+}
+
+.icon.close {
+    margin: unset;
 }
 
 .icon path {
@@ -216,4 +221,78 @@ div.day-label {
     margin: 5px;
     padding: 3px 8px;
     box-sizing: border-box;
+}
+
+div#modal-background {
+    display: none;
+    align-items: center;
+    justify-self: center;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: var(--modal-bg);
+}
+
+div#modal-container {
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    width: 500px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin: auto;
+}
+
+div#modal-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+div#modal-header h2 {
+    width: fit-content;
+}
+
+#dateselectiongrid {
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+    margin: 20px 0px 10px 0px;
+}
+
+#yearinput,
+#monthdropdown,
+#jumpbtn {
+    height: 38px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: var(--border-radius);
+    border: solid 1px var(--border-color);
+    font-size: var(--font-size);
+    font-family: var(--font-family);
+    line-height: var(--line-height);
+    letter-spacing: var(--letter-spacing);
+    background-color: var(--white);
+    color: var(--dark);
+    padding: 5px 10px;
+    box-sizing: border-box;
+}
+
+#yearinput,
+#monthdropdown {
+    width: calc(100% / 2);
+}
+
+#jumpbtn {
+    width: 72px;
+}
+
+.errorprompt {
+    text-align: center;
+    color: var(--not-current-color);
 }

@@ -1,16 +1,26 @@
-//Get all the elements needed
+//Calendar elements
 const calendarElement = document.getElementById("calendar");
 const calendarTitle = document.getElementById("calendar-title");
 const weekdayHeaders = document.getElementById("weekdays");
 const smallCalendarElement = document.getElementById("smallcalendar");
 
-//Weekdays in English and Turkish
+//Modal elements
+const modalBackground = document.getElementById("modal-background");
+const modalContainer = document.getElementById("modal-container");
+const modalTitle = document.getElementById("modal-title");
+const modalContent = document.getElementById("modal-content");
+
+//Weekdays and months in English and Turkish
 const weekdaysEnglish = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const weekdaysTurkish = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"];
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 //Counter for moving forward or backward in calendar
 var currentMonthCounter = 0;
 var currentYearCounter = 0;
+
+//For closing modal when esc key pressed
+var modalState = false;
 
 function renderCalendar() {
 	//Remove the elements in calendar if they exist
@@ -29,7 +39,14 @@ function renderCalendar() {
 
 	//Check if the user moved the calendar to previous or next years
 	if (currentYearCounter !== 0) {
-		date.setFullYear(new Date().getFullYear() + currentYearCounter);
+		var setYear = new Date().getFullYear() + currentYearCounter;
+		if (setYear < 1) {
+			setYear = 1;
+		} else if (setYear > 9999) {
+			setYear = 9999;
+		} else {
+			date.setFullYear(setYear);
+		}
 	}
 
 	//Get the month and year based on the date we got before
@@ -180,6 +197,54 @@ function renderCalendar() {
 	}
 }
 
+function jumpToDate() {
+	const yearInputValue = document.getElementById("yearinput");
+	const monthInputValue = document.getElementById("monthdropdown");
+	
+	//Remove previous error prompts if there is any
+	const errorMessages = modalContainer.querySelectorAll("div.errorprompt");
+	errorMessages.forEach(element => {
+		modalContainer.removeChild(element);
+	});
+
+	//Show an error propmt if no year value is given
+	if (yearInputValue.value === "") {
+		const errorMessage = document.createElement("div");
+		errorMessage.classList.add("errorprompt");
+		errorMessage.textContent = "Invalid date. Please try again.";
+		modalContainer.append(errorMessage);
+		return;
+	}
+
+	//Check if the year is between 1-9999
+	if (yearInputValue.value < 1 || yearInputValue.value > 9999) {
+		const errorMessage = document.createElement("div");
+		errorMessage.classList.add("errorprompt");
+		errorMessage.textContent = "The year must be between 1-9999. Please try again.";
+		modalContainer.append(errorMessage);
+		if (yearInputValue.value < 1) {
+			yearInputValue.value = 1;
+		} else if (yearInputValue > 9999) {
+			yearInputValue.value = 9999;
+		}
+		return;
+	}
+
+	//Get the difference between current month and selected month
+	var currentMonth = new Date().getMonth();
+	var selectedMonthIndex = months.indexOf(monthInputValue.value) + 1;
+	var monthDifference = selectedMonthIndex - (currentMonth + 1);
+
+	//Get the difference between current year and selected year
+	var currentYear = new Date().getFullYear();
+	var yearDifference = yearInputValue.value - currentYear;
+
+	//Set the month and year difference and re-render the calendar
+	currentMonthCounter = monthDifference;
+	currentYearCounter = yearDifference;
+	renderCalendar();
+}
+
 function initButtons() {
 	//Increase the month counter by 1 and re-render the calendar
 	document.getElementById("nextbtn").addEventListener("click", () => {
@@ -196,8 +261,11 @@ function initButtons() {
 	//Set month counter 0 to return to current month and re-render the calendar
 	document.getElementById("todaybtn").addEventListener("click", () => {
 		currentMonthCounter = 0;
+		currentYearCounter = 0;
 		renderCalendar();
 	});
+
+	document.getElementById("closebtn").addEventListener("click", () => { closeModal(); });
 }
 
 function initShortcuts() {
@@ -214,12 +282,84 @@ function initShortcuts() {
 				break;
 		}
 	});
+
+	//Close modal when esc key pressed
+	document.addEventListener("keyup", (target) => {
+		if (modalState && target.key === "Escape") {
+			closeModal();
+		}
+	})
+
+	//Add a shortcut for jumping to dates
+	calendarTitle.addEventListener("click", () => {
+		openModal("jumpToDate");
+	})
 }
 
-function openModal(modalType, selectedDate = null) {
+//Prepare the modal
+function openModal(modalType, selectedDate = null) { //Selected date will be for creating events
+	//Create the modal title
+	const currentModalTitle = document.createElement("h2");
+	if (modalType === "jumpToDate") {
+		//Setup and append the title
+		currentModalTitle.textContent = "Jump to Date"
+		modalTitle.appendChild(currentModalTitle);
+
+		//Create an element for using flexbox
+		const selectionGrid = document.createElement("div");
+		selectionGrid.setAttribute("id", "dateselectiongrid");
+
+		//Create the month selector dropdown
+		const monthSelector = document.createElement("select");
+		monthSelector.setAttribute("id", "monthdropdown");
+		selectionGrid.appendChild(monthSelector);
+		//Loop 12 times for 12 months
+		for (let month = 0; month < 12; month++) {
+			//Get current year
+			const _year = new Date().getFullYear();
+			//Get month as a string from the date
+			const currentIterationMonth = new Date(_year, month).toLocaleTimeString("en-uk", { month: "long" });
+			//Create an option for that month to append to selector
+			const monthSelectorOption = document.createElement("option");
+			monthSelectorOption.textContent = currentIterationMonth.split(" ")[0];
+			//Append the month option to selector
+			monthSelector.appendChild(monthSelectorOption);
+		}
+
+		//Create the year input
+		const yearInput = document.createElement("input");
+		yearInput.setAttribute("type", "number");
+		yearInput.setAttribute("id", "yearinput");
+		yearInput.value = new Date().getFullYear();
+		selectionGrid.appendChild(yearInput);
+
+		//Create the jump button 
+		const jumpButton = document.createElement("a");
+		jumpButton.setAttribute("id", "jumpbtn")
+		jumpButton.textContent = "Jump!";
+		jumpButton.addEventListener("click", () => { jumpToDate() });
+		selectionGrid.appendChild(jumpButton);
+		
+		//Append the grid to the modal-content element
+		modalContent.appendChild(selectionGrid);
+	}
+	modalState = true;
+	//Show the modal background
+	modalBackground.style.display = "flex";
 	//new event modal
-	//jump to date modal
 	//view event modal
+}
+
+//Remove all elements and error prompts from modal-content element
+function closeModal() {
+	const errorMessages = modalContainer.querySelectorAll("div.errorprompt");
+	errorMessages.forEach(element => {
+		modalContainer.removeChild(element);
+	});
+	modalContent.textContent = "";
+	modalTitle.textContent = "";
+	modalBackground.style.display = "none";
+	modalState = false;
 }
 
 //Finally call the functions on window load
@@ -227,4 +367,5 @@ window.onload = () => {
 	renderCalendar();
 	initButtons();
 	initShortcuts();
+	openModal("jumpToDate");
 }
