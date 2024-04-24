@@ -352,10 +352,12 @@ function openModal(modalType, selectedDate = null) { //Selected date will be for
 
 //Remove all elements and error prompts from modal-content element
 function closeModal() {
+	//Remove all error prompts if there is any
 	const errorMessages = modalContainer.querySelectorAll("div.errorprompt");
 	errorMessages.forEach(element => {
 		modalContainer.removeChild(element);
 	});
+	//Reset the contents
 	modalContent.textContent = "";
 	modalTitle.textContent = "";
 	modalBackground.style.display = "none";
@@ -367,5 +369,4 @@ window.onload = () => {
 	renderCalendar();
 	initButtons();
 	initShortcuts();
-	openModal("jumpToDate");
 }
