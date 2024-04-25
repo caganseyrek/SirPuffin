@@ -75,7 +75,7 @@ h3 {
     background-color: var(--not-current-bg);
 }
 
-.sc-notcurrent {
+.scnotcurrent {
     color: var(--not-current-color) !important;
 }
 
@@ -139,7 +139,7 @@ div#smallcalendar {
     row-gap: 1px;
 }
 
-div#smallcalendar div.sc-day {
+div#smallcalendar div.scday {
     border-radius: var(--border-radius);
     width: calc(234px / 7);
     height: calc(234px / 7);
@@ -151,7 +151,7 @@ div#smallcalendar div.sc-day {
     text-align: center;
 }
 
-div#smallcalendar div.sc-day.header {
+div#smallcalendar div.scday.header {
     border-radius: var(--border-radius);
     background-color: var(--not-current-bg);
     color: var(--not-current-color);
@@ -215,7 +215,7 @@ td {
     border: solid 1px var(--border-color);
 }
 
-div.day-label {
+div.daylabel {
     float: right;
     width: fit-content;
     border-radius: var(--border-radius);
@@ -225,7 +225,7 @@ div.day-label {
     box-sizing: border-box;
 }
 
-div#modal-background {
+div#modalbackground {
     display: none;
     align-items: center;
     justify-self: center;
@@ -239,7 +239,7 @@ div#modal-background {
     background-color: var(--modal-bg);
 }
 
-div#modal-container {
+div#modalcontainer {
     background-color: var(--white);
     border-radius: var(--border-radius);
     width: 500px;
@@ -248,14 +248,14 @@ div#modal-container {
     margin: 0px auto 30px auto;
 }
 
-div#modal-header {
+div#modalheader {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 }
 
-div#modal-header h2 {
+div#modalheader h2 {
     width: fit-content;
 }
 
@@ -266,7 +266,7 @@ div#modal-header h2 {
     margin: 20px 0px 10px 0px;
 }
 
-#yearinput,
+.modalinput,
 #monthdropdown,
 #jumpbtn {
     height: 38px;
@@ -285,7 +285,7 @@ div#modal-header h2 {
     box-sizing: border-box;
 }
 
-#yearinput,
+.modalinput,
 #monthdropdown {
     width: calc(100% / 2);
 }

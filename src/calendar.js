@@ -1,14 +1,14 @@
 //Calendar elements
 const calendarElement = document.getElementById("calendar");
-const calendarTitle = document.getElementById("calendar-title");
+const calendarTitle = document.getElementById("calendartitle");
 const weekdayHeaders = document.getElementById("weekdays");
 const smallCalendarElement = document.getElementById("smallcalendar");
 
 //Modal elements
-const modalBackground = document.getElementById("modal-background");
-const modalContainer = document.getElementById("modal-container");
-const modalTitle = document.getElementById("modal-title");
-const modalContent = document.getElementById("modal-content");
+const modalBackground = document.getElementById("modalbackground");
+const modalContainer = document.getElementById("modalcontainer");
+const modalTitle = document.getElementById("modaltitle");
+const modalContent = document.getElementById("modalcontent");
 
 //Weekdays and months in English and Turkish
 const weekdaysEnglish = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -105,7 +105,7 @@ function renderCalendar() {
 		//For small calendar
 		const scWeekday = document.createElement("div");
 		scWeekday.textContent = weekdaysEnglish[i].charAt(0);
-		scWeekday.classList.add("sc-day");
+		scWeekday.classList.add("scday");
 		scWeekday.classList.add("header");
 		smallCalendarElement.appendChild(scWeekday);
 	}
@@ -128,10 +128,10 @@ function renderCalendar() {
 			const scDayElement = document.createElement("div");
 
 			//Add classes to day label and day events
-			dayLabel.classList.add("day-label");
-			dayEvents.classList.add("day-event");
+			dayLabel.classList.add("daylabel");
+			dayEvents.classList.add("dayevent");
 
-			scDayElement.classList.add("sc-day");
+			scDayElement.classList.add("scday");
 
 			if (dayCount <= paddingDays) {
 				//Check if we are rendering padding days
@@ -141,7 +141,7 @@ function renderCalendar() {
 
 				//Render padding days in small calendar
 				scDayElement.textContent = (daysInPrevMonth - (paddingDays - dayCount)).toString();
-				scDayElement.classList.add("sc-notcurrent");
+				scDayElement.classList.add("scnotcurrent");
 			} else {
 				//Else we are rendering selected month's days
 				//Render selected month's days in main calendar
@@ -176,7 +176,7 @@ function renderCalendar() {
 
 				//Render next month's visible days in small calendar
 				scDayElement.textContent = nextMontDayCount.toString();
-				scDayElement.classList.add("sc-notcurrent");
+				scDayElement.classList.add("scnotcurrent");
 
 				nextMontDayCount++;
 			}
@@ -302,7 +302,7 @@ function openModal(modalType, selectedDate = null) { //Selected date will be for
 	const currentModalTitle = document.createElement("h2");
 	if (modalType === "jumpToDate") {
 		//Setup and append the title
-		currentModalTitle.textContent = "Jump to Date"
+		currentModalTitle.textContent = "Jump to Date";
 		modalTitle.appendChild(currentModalTitle);
 
 		//Create an element for using flexbox
@@ -330,6 +330,7 @@ function openModal(modalType, selectedDate = null) { //Selected date will be for
 		const yearInput = document.createElement("input");
 		yearInput.setAttribute("type", "number");
 		yearInput.setAttribute("id", "yearinput");
+		yearInput.setAttribute("class", "modalinput");
 		yearInput.value = new Date().getFullYear();
 		selectionGrid.appendChild(yearInput);
 
