@@ -1,0 +1,22 @@
+{
+    "settings": {
+        "selectedTheme": "dark",
+        "firstDayOfWeek": "Monday"
+    },
+    "savedEvents": [
+        {
+            "title": "Yew Year's Day",
+            "startdate": "1-01-2024",
+            "enddate": "1-01-2024",
+            "repeat": false,
+            "color": "#FF0000"
+        },
+        {
+            "title": "Yew Year's Day",
+            "startdate": "1-01-2024",
+            "enddate": "1-01-2024",
+            "repeat": false,
+            "color": "#FF0000"
+        }
+    ]
+}
