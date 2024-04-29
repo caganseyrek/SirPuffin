@@ -1,5 +1,6 @@
 {
     "settings": {
+        "accentColor": "default",
         "selectedTheme": "dark",
         "firstDayOfWeek": "Monday"
     },

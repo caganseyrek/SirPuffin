@@ -5,10 +5,13 @@ var savedEvents = JSON.parse(fs.readFileSync("userdata.json")).savedEvents;
 
 function saveSetting(setting, newValue) {
     switch (setting) {
-        case "theme":
+        case "accentcolor":
+            settings.accentColor = newValue.toString();
+            break;
+        case "selectedtheme":
             settings.selectedTheme = newValue.toString();
             break;
-        case "firstday":
+        case "firstdayofweek":
             settings.firstDayOfWeek = newValue.toString();
             break;
     };
