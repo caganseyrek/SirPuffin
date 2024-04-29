@@ -17,6 +17,29 @@ const weekdaysEnglish = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
 const weekdaysTurkish = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"];
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
+//Local Holidays
+const holidays_de = [
+    { "title": "Yew Year's Day", "date": "1 January" },
+    { "title": "Epiphany", "date": "6 January" },
+    { "title": "Labour Day", "date": "1 May" },
+    { "title": "Assumption Day", "date": "15 August" },
+    { "title": "World Children's Day", "date": "20 September" },
+    { "title": "German Unity Day", "date": "3 October" },
+    { "title": "Reformation Day", "date": "31 October" },
+    { "title": "All Saint's Day", "date": "1 November" },
+    { "title": "Christmas Day", "date": "25 December" },
+    { "title": "Second Day of Christmas", "date": "26 December" }
+]
+
+const holidays_tr = [
+    { "title": "Yew Year's Day", "date": "1 January" },
+    { "title": "National Sovereignity and Children's Day", "date": "23 April" },
+    { "title": "Labour and Solidarity Day", "date": "1 May" },
+    { "title": "Commemoration of Atatürk, Youth and Sports Day", "date": "19 May" },
+    { "title": "Victory Day", "date": "30 August" },
+    { "title": "Republic Day", "date": "29 October" }
+]
+
 //Counter for moving forward or backward in calendar
 var currentMonthCounter = 0;
 var currentYearCounter = 0;
