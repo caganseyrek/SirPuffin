@@ -15,6 +15,7 @@
   "devDependencies": {
     "@types/electron": "^1.6.10",
     "electron": "^30.0.0",
+    "uglify-js": "^3.17.4",
     "vite": "^5.2.10"
   }
 }
