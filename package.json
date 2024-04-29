@@ -1,7 +1,7 @@
 {
   "name": "sirpuffin",
   "version": "1.0.0",
-  "description": "A lightweight, cross-platform calendar app",
+  "description": "Lightweight, cross-platform calendar app",
   "main": "src/main.js",
   "scripts": {
     "electron": "electron src/main.js",
