@@ -1,3 +1,5 @@
+import saveSettings from "./data/datamanager";
+
 //Calendar elements
 const calendarElement = document.getElementById("calendar");
 const calendarTitle = document.getElementById("calendartitle");
@@ -55,8 +57,8 @@ function renderCalendar() {
 
 	//These variables are for checking current day
 	const today = date.getDate();
-	const currentMonth = new Date().toLocaleDateString("en-uk", { month: "long" })
-	const currentYear = new Date().toLocaleDateString("en-uk", { year: "numeric" })
+	const currentMonth = new Date().toLocaleDateString("en-uk", { month: "long" });
+	const currentYear = new Date().toLocaleDateString("en-uk", { year: "numeric" });
 
 	//Get first days in selected month and next month
 	const firstDayInMonth = new Date(year, month, 1);
@@ -192,9 +194,17 @@ function renderCalendar() {
 			//Append day element to small calendar
 			smallCalendarElement.appendChild(scDayElement);
 		}
+
 		//Append the row to the main calendar elements
 		calendarElement.appendChild(calendarRow);
+		
+		//Render events
+		renderEvents();
 	}
+}
+
+function renderEvents() {
+	// to-do
 }
 
 function jumpToDate() {
@@ -203,9 +213,7 @@ function jumpToDate() {
 
 	//Remove previous error prompts if there is any
 	const errorMessages = modalContainer.querySelectorAll("div.errorprompt");
-	errorMessages.forEach(element => {
-		modalContainer.removeChild(element);
-	});
+	errorMessages.forEach(element => { modalContainer.removeChild(element); });
 
 	//Show an error propmt if no year value is given
 	if (yearInputValue.value === "") {
@@ -243,6 +251,118 @@ function jumpToDate() {
 	currentMonthCounter = monthDifference;
 	currentYearCounter = yearDifference;
 	renderCalendar();
+
+	//Close the modal if it is open
+	if (modalState) closeModal();
+}
+
+//Prepare the modal
+function openModal(modalType, selectedDate = null) { //Selected date will be for creating events
+	//Create the modal title
+	const currentModalTitle = document.createElement("h2");
+
+	//Create an element for using flexbox
+	const selectionGrid = document.createElement("div");
+	selectionGrid.setAttribute("id", "dateselectiongrid");
+	selectionGrid.appendChild(monthSelector);
+
+	//Create the month selector dropdown
+	const monthSelector = document.createElement("select");
+	monthSelector.setAttribute("id", "monthdropdown");
+	//Loop 12 times for 12 months
+	for (let month = 0; month < 12; month++) {
+		//Get current year
+		const _year = new Date().getFullYear();
+		//Get month as a string from the date
+		const currentIterationMonth = new Date(_year, month).toLocaleTimeString("en-uk", { month: "long" });
+		//Create an option for that month to append to selector
+		const monthSelectorOption = document.createElement("option");
+		monthSelectorOption.textContent = currentIterationMonth.split(" ")[0];
+		//Append the month option to selector
+		monthSelector.appendChild(monthSelectorOption);
+	}
+
+	//Create the year input
+	const yearInput = document.createElement("input");
+	yearInput.setAttribute("type", "number");
+	yearInput.setAttribute("id", "yearinput");
+	yearInput.setAttribute("class", "modalinput");
+	yearInput.value = new Date().getFullYear();
+	selectionGrid.appendChild(yearInput);
+
+	if (modalType === "settings") {
+		//Setup and append the title
+		currentModalTitle.textContent = "Settings";
+		modalTitle.appendChild(currentModalTitle);
+	}
+
+	if (modalType === "jumpToDate") {
+		//Setup and append the title
+		currentModalTitle.textContent = "Jump to Date";
+		modalTitle.appendChild(currentModalTitle);
+
+		//Create the jump button 
+		const jumpButton = document.createElement("a");
+		jumpButton.setAttribute("id", "jumpaction");
+		jumpButton.textContent = "Jump!";
+		jumpButton.addEventListener("click", () => { jumpToDate() });
+		selectionGrid.appendChild(jumpButton);
+
+		//Append the grid to the modal-content element
+		modalContent.appendChild(selectionGrid);
+	}
+
+	if (modalType === "newEvent" || modalType === "viewEvent") {
+		const newEventDate = selectedDate;
+
+		//Create an element for using flexbox
+		const selectionGrid = document.createElement("div");
+		selectionGrid.setAttribute("id", "dateselectiongrid");
+
+		//Create the year input
+		const startDate = document.createElement("input");
+		startDate.setAttribute("type", "number");
+		startDate.setAttribute("id", "startdate");
+		startDate.setAttribute("class", "modalinput");
+		startDate.value = new Date().getFullYear();
+		selectionGrid.appendChild(startDate);
+
+		//Create the month selector dropdown
+		const monthSelector = document.createElement("select");
+		monthSelector.setAttribute("id", "monthdropdown");
+		selectionGrid.appendChild(monthSelector);
+
+		switch (modalType) {
+			case "newEvent":
+				currentModalTitle.textContent = "Add New Event";
+				modalTitle.appendChild(currentModalTitle);
+				break;
+			case "viewEvent":
+				currentModalTitle.textContent = "Event Details";
+				modalTitle.appendChild(currentModalTitle);
+				break;
+		}
+	}
+	modalState = true;
+
+	//Show the modal background
+	modalBackground.style.display = "flex";
+
+	// -> new event modal
+	//view event modal
+}
+
+//Remove all elements and error prompts from modal-content element
+function closeModal() {
+	//Remove all error prompts if there is any
+	const errorMessages = modalContainer.querySelectorAll("div.errorprompt");
+	errorMessages.forEach(element => { modalContainer.removeChild(element); });
+
+	//Reset the contents
+	modalContent.textContent = "";
+	modalTitle.textContent = "";
+	modalBackground.style.display = "none";
+	modalState = false;
 }
 
 function initButtons() {
@@ -265,6 +385,13 @@ function initButtons() {
 		renderCalendar();
 	});
 
+	//Open jump modal
+	document.getElementById("jumpbtn").addEventListener("click", () => { openModal("jumpToDate"); });
+	
+	//Open settings modal
+	document.getElementById("settingsbtn").addEventListener("click", () => { openModal("settings"); });
+
+	//Close button in modal
 	document.getElementById("closebtn").addEventListener("click", () => { closeModal(); });
 }
 
@@ -288,81 +415,7 @@ function initShortcuts() {
 		if (modalState && target.key === "Escape") {
 			closeModal();
 		}
-	})
-
-	//Add a shortcut for jumping to dates
-	calendarTitle.addEventListener("click", () => {
-		openModal("jumpToDate");
-	})
-}
-
-//Prepare the modal
-function openModal(modalType, selectedDate = null) { //Selected date will be for creating events
-	//Create the modal title
-	const currentModalTitle = document.createElement("h2");
-	if (modalType === "jumpToDate") {
-		//Setup and append the title
-		currentModalTitle.textContent = "Jump to Date";
-		modalTitle.appendChild(currentModalTitle);
-
-		//Create an element for using flexbox
-		const selectionGrid = document.createElement("div");
-		selectionGrid.setAttribute("id", "dateselectiongrid");
-
-		//Create the month selector dropdown
-		const monthSelector = document.createElement("select");
-		monthSelector.setAttribute("id", "monthdropdown");
-		selectionGrid.appendChild(monthSelector);
-		//Loop 12 times for 12 months
-		for (let month = 0; month < 12; month++) {
-			//Get current year
-			const _year = new Date().getFullYear();
-			//Get month as a string from the date
-			const currentIterationMonth = new Date(_year, month).toLocaleTimeString("en-uk", { month: "long" });
-			//Create an option for that month to append to selector
-			const monthSelectorOption = document.createElement("option");
-			monthSelectorOption.textContent = currentIterationMonth.split(" ")[0];
-			//Append the month option to selector
-			monthSelector.appendChild(monthSelectorOption);
-		}
-
-		//Create the year input
-		const yearInput = document.createElement("input");
-		yearInput.setAttribute("type", "number");
-		yearInput.setAttribute("id", "yearinput");
-		yearInput.setAttribute("class", "modalinput");
-		yearInput.value = new Date().getFullYear();
-		selectionGrid.appendChild(yearInput);
-
-		//Create the jump button 
-		const jumpButton = document.createElement("a");
-		jumpButton.setAttribute("id", "jumpbtn")
-		jumpButton.textContent = "Jump!";
-		jumpButton.addEventListener("click", () => { jumpToDate() });
-		selectionGrid.appendChild(jumpButton);
-
-		//Append the grid to the modal-content element
-		modalContent.appendChild(selectionGrid);
-	}
-	modalState = true;
-	//Show the modal background
-	modalBackground.style.display = "flex";
-	//new event modal
-	//view event modal
-}
-
-//Remove all elements and error prompts from modal-content element
-function closeModal() {
-	//Remove all error prompts if there is any
-	const errorMessages = modalContainer.querySelectorAll("div.errorprompt");
-	errorMessages.forEach(element => {
-		modalContainer.removeChild(element);
 	});
-	//Reset the contents
-	modalContent.textContent = "";
-	modalTitle.textContent = "";
-	modalBackground.style.display = "none";
-	modalState = false;
 }
 
 //Finally call the functions on window load
@@ -370,4 +423,5 @@ window.onload = () => {
 	renderCalendar();
 	initButtons();
 	initShortcuts();
+	//openModal("newEvent");
 }
