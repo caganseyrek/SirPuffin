@@ -11,7 +11,6 @@ const modalContent = document.getElementById("modalcontent");
 //Weekdays and months
 const weekdaysEnglish = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const weekdaysTurkish = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"];
-
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 //National holidays
 const holidays = [
@@ -263,15 +262,15 @@ function openModal(modalType, selectedDate = null) {
 		mondayOption.textContent = "Monday";
 		sundayOption.textContent = "Sunday";
 		//Append options to selectors
-		themeSelector.appendChild(darkThemeOption);
 		themeSelector.appendChild(lightThemeOption);
+		themeSelector.appendChild(darkThemeOption);
 		firstdaySelector.appendChild(mondayOption);
 		firstdaySelector.appendChild(sundayOption);
 		//Set selected options as saved settings
-		const currentThemeIndex = localStorage.getItem("theme") === "Light" ? 1 : 0;
-		const currentFirstdayIndex = localStorage.getItem("firstday") === "Monday" ? 1 : 0;
+		const currentThemeIndex = localStorage.getItem("theme") === "Light" ? 0 : 1;
+		const currentFirstdayIndex = localStorage.getItem("firstday") === "Monday" ? 0 : 1;
 		themeSelector.selectedIndex = currentThemeIndex;
-		firstdaySelector.selectedOptions = currentFirstdayIndex;
+		firstdaySelector.selectedIndex = currentFirstdayIndex;
 		//Create a row for and append label and selectors
 		const themeOptionRow = document.createElement("div");
 		themeOptionRow.setAttribute("class", "settingsrow");
@@ -344,6 +343,12 @@ function loadSettings() {
 	//Get saved settings from local storage
 	const savedTheme = localStorage.getItem("theme");
 	const savedFirstday = localStorage.getItem("firstday");
+	if (savedTheme === null || savedFirstday === null) {
+		localStorage.setItem("theme", "Light");
+		localStorage.setItem("firstday", "Monday");
+		currentTheme = "Light";
+		currentFirstDay = "Monday";
+	}
 	//Change the theme if current theme isn't the same as saved theme
 	if (currentTheme !== savedTheme) {
 		//Toggle the dark mode
@@ -355,7 +360,7 @@ function loadSettings() {
 	//Change the first day if current first day  isn't the same as saved first day 
 	if (currentFirstDay !== savedFirstday) {
 		if (weekdaysEnglish[0] === "Sunday" || weekdaysTurkish[0] === "Pazar") {
-			//If first day is sunday, reverse the array and pop the last one, which is the current first day sunday,
+			//If first day is sunday, reverse the array and pop the last one, which is the current first day (sunday),
 			//then re-reverse the array and add sunday to the end of the array
 			const firstDayEnglish = weekdaysEnglish.reverse().pop();
 			const firstDayTurkish = weekdaysTurkish.reverse().pop();
