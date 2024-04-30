@@ -399,7 +399,6 @@ function initButtons() {
 		renderCalendar();
 	});
 	//Add event listeners to each button
-	document.getElementById("holidaysbtn").addEventListener("click", () => { openModal("holidays"); });
 	document.getElementById("jumpbtn").addEventListener("click", () => { openModal("jumpToDate"); });
 	document.getElementById("settingsbtn").addEventListener("click", () => { openModal("settings"); });
 	document.getElementById("closebtn").addEventListener("click", () => { closeModal(); });

@@ -101,7 +101,6 @@ svg path {
     cursor: pointer;
 }
 
-#holidaysbtn,
 #jumpbtn,
 #jumpaction,
 #settingsbtn,
@@ -128,8 +127,7 @@ svg path {
 }
 
 #todaybtn,
-#filler,
-a#settingsbtn {
+#filler {
     flex: 1;
 }
 
@@ -155,13 +153,7 @@ div#sidebarbtns {
     display: flex;
     column-gap: 5px;
     row-gap: 5px;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-
-#holidaysbtn,
-#jumpbtn {
-    width: calc((100% - 5px) / 2);
+    flex-direction: column;
 }
 
 div#smallcalendar {
