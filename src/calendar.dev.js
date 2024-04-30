@@ -11,21 +11,10 @@ const modalContent = document.getElementById("modalcontent");
 //Weekdays and months
 const weekdaysEnglish = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const weekdaysTurkish = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"];
+
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 //National holidays
-const holidays_de = [
-	{ "title": "Yew Year's Day", "date": "1 January" },
-	{ "title": "Epiphany", "date": "6 January" },
-	{ "title": "Labour Day", "date": "1 May" },
-	{ "title": "Assumption Day", "date": "15 August" },
-	{ "title": "World Children's Day", "date": "20 September" },
-	{ "title": "German Unity Day", "date": "3 October" },
-	{ "title": "Reformation Day", "date": "31 October" },
-	{ "title": "All Saint's Day", "date": "1 November" },
-	{ "title": "Christmas Day", "date": "25 December" },
-	{ "title": "Second Day of Christmas", "date": "26 December" }
-];
-const holidays_tr = [
+const holidays = [
 	{ "title": "Yew Year's Day", "date": "1 January" },
 	{ "title": "National Sovereignity and Children's Day", "date": "23 April" },
 	{ "title": "Labour and Solidarity Day", "date": "1 May" },
@@ -36,6 +25,8 @@ const holidays_tr = [
 var currentMonthCounter = 0;
 var currentYearCounter = 0;
 var modalState = false;
+var currentTheme = "Light";
+var currentFirstDay = "Monday";
 function renderCalendar() {
 	//Remove elements from previous render
 	calendarElement.textContent = "";
@@ -179,8 +170,8 @@ function renderEvents() {
 	// to-do
 }
 function jumpToDate() {
-	const yearInputValue = document.getElementById("yearinput");
-	const monthInputValue = document.getElementById("monthdropdown");
+	const yearInputValue = document.getElementById("jumpyearinput");
+	const monthInputValue = document.getElementById("jumpmonthdropdown");
 	//Remove previous error prompts if there is any
 	const errorMessages = modalContainer.querySelectorAll("div.errorprompt");
 	errorMessages.forEach(element => { modalContainer.removeChild(element); });
@@ -227,7 +218,7 @@ function openModal(modalType, selectedDate = null) {
 	selectionGrid.setAttribute("id", "dateselectiongrid");
 	//Create the month selector dropdown
 	const monthSelector = document.createElement("select");
-	monthSelector.setAttribute("id", "monthdropdown");
+	monthSelector.setAttribute("class", "dropdown");
 	for (let month = 0; month < 12; month++) {
 		const _year = new Date().getFullYear();
 		//Get month as a string from the date
@@ -240,22 +231,73 @@ function openModal(modalType, selectedDate = null) {
 	//Create the day input
 	const dayInput = document.createElement("input");
 	dayInput.setAttribute("type", "number");
-	dayInput.setAttribute("id", "dayinput");
 	dayInput.setAttribute("class", "modalinput");
 	//Create the year input
 	const yearInput = document.createElement("input");
 	yearInput.setAttribute("type", "number");
-	yearInput.setAttribute("id", "yearinput");
 	yearInput.setAttribute("class", "modalinput");
 	//Check modal type
 	if (modalType === "settings") {
 		//Setup the title for current modal
 		currentModalTitle.textContent = "Settings";
 		modalTitle.appendChild(currentModalTitle);
-		//Create a row for a setting element
-		const settingsRow = document.createElement("div");
-		settingsRow.setAttribute("class", "settingsrow");
-		const label = document.createElement("span");
+		//Create setting labels
+		const themeLabel = document.createElement("span");
+		const firstdayLabel = document.createElement("span");
+		themeLabel.textContent = "Calendar Theme";
+		firstdayLabel.textContent = "First Day of the Week";
+		//Create theme selector
+		const themeSelector = document.createElement("select");
+		themeSelector.setAttribute("class", "dropdown");
+		themeSelector.setAttribute("id", "themeselector");
+		const darkThemeOption = document.createElement("option");
+		const lightThemeOption = document.createElement("option");
+		darkThemeOption.textContent = "Dark";
+		lightThemeOption.textContent = "Light";
+		//Create first day selector
+		const firstdaySelector = document.createElement("select");
+		firstdaySelector.setAttribute("class", "dropdown");
+		firstdaySelector.setAttribute("id", "firstdayselector");
+		const mondayOption = document.createElement("option");
+		const sundayOption = document.createElement("option");
+		mondayOption.textContent = "Monday";
+		sundayOption.textContent = "Sunday";
+		//Append options to selectors
+		themeSelector.appendChild(darkThemeOption);
+		themeSelector.appendChild(lightThemeOption);
+		firstdaySelector.appendChild(mondayOption);
+		firstdaySelector.appendChild(sundayOption);
+		//Set selected options as saved settings
+		const currentThemeIndex = localStorage.getItem("theme") === "Light" ? 1 : 0;
+		const currentFirstdayIndex = localStorage.getItem("firstday") === "Monday" ? 1 : 0;
+		themeSelector.selectedIndex = currentThemeIndex;
+		firstdaySelector.selectedOptions = currentFirstdayIndex;
+		//Create a row for and append label and selectors
+		const themeOptionRow = document.createElement("div");
+		themeOptionRow.setAttribute("class", "settingsrow");
+		themeOptionRow.appendChild(themeLabel);
+		themeOptionRow.appendChild(themeSelector);
+		const firstdayOptionRow = document.createElement("div");
+		firstdayOptionRow.setAttribute("class", "settingsrow");
+		firstdayOptionRow.appendChild(firstdayLabel);
+		firstdayOptionRow.appendChild(firstdaySelector);
+		//Create the save button
+		const saveSettingsButton = document.createElement("a");
+		saveSettingsButton.setAttribute("id", "settingaction");
+		saveSettingsButton.textContent = "Save Settings";
+		saveSettingsButton.addEventListener("click", () => {
+			//Save values on selectors to localstorage
+			const themeselectorInput = document.getElementById("themeselector").value;
+			const firstdayselectorInput = document.getElementById("firstdayselector").value;
+			localStorage.setItem("theme", themeselectorInput.toString());
+			localStorage.setItem("firstday", firstdayselectorInput.toString());
+			//Load saved settings
+			loadSettings();
+		});
+		//Append options to modal content
+		modalContent.appendChild(themeOptionRow);
+		modalContent.appendChild(firstdayOptionRow);
+		modalContent.appendChild(saveSettingsButton);
 	}
 	if (modalType === "jumpToDate") {
 		//Setup the title for current modal
@@ -267,7 +309,10 @@ function openModal(modalType, selectedDate = null) {
 		const jumpButton = document.createElement("a");
 		jumpButton.setAttribute("id", "jumpaction");
 		jumpButton.textContent = "Jump!";
-		jumpButton.addEventListener("click", () => { jumpToDate() });
+		jumpButton.addEventListener("click", () => { jumpToDate(); });
+		//Setup input ids
+		monthSelector.setAttribute("id", "jumpmonthdropdown");
+		yearInput.setAttribute("id", "jumpyearinput");
 		//Append all the elements to selection grid
 		selectionGrid.appendChild(yearInput);
 		selectionGrid.appendChild(monthSelector);
@@ -279,7 +324,7 @@ function openModal(modalType, selectedDate = null) {
 		currentModalTitle.textContent = "Add New Event";
 		modalTitle.appendChild(currentModalTitle);
 		const newEventDate = selectedDate;
-		//to-d-
+		//to-do
 	}
 	//Show the modal
 	modalBackground.style.display = "flex";
@@ -294,6 +339,42 @@ function closeModal() {
 	modalTitle.textContent = "";
 	modalBackground.style.display = "none";
 	modalState = false;
+}
+function loadSettings() {
+	//Get saved settings from local storage
+	const savedTheme = localStorage.getItem("theme");
+	const savedFirstday = localStorage.getItem("firstday");
+	//Change the theme if current theme isn't the same as saved theme
+	if (currentTheme !== savedTheme) {
+		//Toggle the dark mode
+		document.body.classList.toggle("darkmode");
+		//Set current theme and save it to local storage
+		currentTheme === "Light" ? currentTheme = "Dark" : currentTheme = "Light";
+		localStorage.setItem("theme", currentTheme);
+	}
+	//Change the first day if current first day  isn't the same as saved first day 
+	if (currentFirstDay !== savedFirstday) {
+		if (weekdaysEnglish[0] === "Sunday" || weekdaysTurkish[0] === "Pazar") {
+			//If first day is sunday, reverse the array and pop the last one, which is the current first day sunday,
+			//then re-reverse the array and add sunday to the end of the array
+			const firstDayEnglish = weekdaysEnglish.reverse().pop();
+			const firstDayTurkish = weekdaysTurkish.reverse().pop();
+			weekdaysEnglish.reverse().push(firstDayEnglish);
+			weekdaysTurkish.reverse().push(firstDayTurkish);
+		} else {
+			//If first day is monday, pop the last day from the week
+			//and add it to the start of the array
+			const lastDayEnglish = weekdaysEnglish.pop();
+			const lastDayTurkish = weekdaysTurkish.pop();
+			weekdaysEnglish.unshift(lastDayEnglish);
+			weekdaysTurkish.unshift(lastDayTurkish);
+		}
+		//Set current first day and save it to local storage
+		currentFirstDay === "Monday" ? currentFirstDay = "Sunday" : currentFirstDay = "Monday";
+		localStorage.setItem("firstday", currentFirstDay);
+	}
+	//Re-render the calendar
+	renderCalendar();
 }
 function initButtons() {
 	//Increase the month counter by 1 and re-render the calendar
@@ -313,6 +394,7 @@ function initButtons() {
 		renderCalendar();
 	});
 	//Add event listeners to each button
+	document.getElementById("holidaysbtn").addEventListener("click", () => { openModal("holidays"); });
 	document.getElementById("jumpbtn").addEventListener("click", () => { openModal("jumpToDate"); });
 	document.getElementById("settingsbtn").addEventListener("click", () => { openModal("settings"); });
 	document.getElementById("closebtn").addEventListener("click", () => { closeModal(); });
@@ -338,6 +420,7 @@ function initShortcuts() {
 }
 window.onload = () => {
 	//Finally call the functions on window load
+	loadSettings();
 	renderCalendar();
 	initButtons();
 	initShortcuts();

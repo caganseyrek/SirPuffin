@@ -101,6 +101,7 @@ svg path {
 #jumpbtn,
 #jumpaction,
 #settingsbtn,
+#settingaction,
 #todaybtn,
 #nextbtn,
 #prevbtn,
@@ -118,11 +119,13 @@ svg path {
     cursor: pointer;
 }
 
-#todaybtn {
-    flex: 1;
+#jumpaction {
+    width: 100%;
 }
 
-#filler {
+#todaybtn,
+#filler,
+a#settingsbtn {
     flex: 1;
 }
 
@@ -155,10 +158,6 @@ div#sidebarbtns {
 #holidaysbtn,
 #jumpbtn {
     width: calc((100% - 5px) / 2);
-}
-
-a#settingsbtn {
-    flex: 1;
 }
 
 div#smallcalendar {
@@ -244,7 +243,7 @@ section#weekdays div {
 
 table {
     width: 100%;
-    height: calc(100% - 110px);
+    height: calc(100% - 107px);
     border-collapse: collapse;
 }
 
@@ -303,15 +302,20 @@ div#modalheader h2 {
     width: fit-content;
 }
 
+div#modalcontent {
+    margin: 20px 0px 0px 0px;
+}
+
 #dateselectiongrid {
     display: flex;
     flex-direction: row;
-    column-gap: 10px;
-    margin: 20px 0px 10px 0px;
+    flex-wrap: wrap;
+    column-gap: 5px;
+    row-gap: 5px;
 }
 
 .modalinput,
-#monthdropdown {
+.dropdown {
     height: 38px;
     display: flex;
     justify-content: center;
@@ -329,11 +333,21 @@ div#modalheader h2 {
 }
 
 .modalinput,
-#monthdropdown {
-    width: calc(100% / 2);
+.dropdown {
+    width: calc((100% - 5px) / 2);
 }
 
 .errorprompt {
     text-align: center;
     color: var(--not-current-color);
+}
+
+.settingsrow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.settingsrow:not(:first-child) {
+    margin: 5px 0px;
 }
