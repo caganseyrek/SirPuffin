@@ -1,7 +1,7 @@
 {
   "name": "sirpuffin",
   "version": "1.0.0",
-  "description": "A lightweight, cross-platform calendar app",
+  "description": "Lightweight, cross-platform calendar app",
   "main": "src/main.js",
   "scripts": {
     "electron": "electron src/main.js",
@@ -15,6 +15,7 @@
   "devDependencies": {
     "@types/electron": "^1.6.10",
     "electron": "^30.0.0",
+    "uglify-js": "^3.17.4",
     "vite": "^5.2.10"
   }
 }
