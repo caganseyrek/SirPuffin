@@ -41,6 +41,7 @@ body {
 }
 
 body.darkmode {
+    color-scheme: dark;
     --white: #111111;
     --dark: #DDDDDD;
     --accent: #5F52A3;
