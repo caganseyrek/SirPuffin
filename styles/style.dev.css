@@ -4,6 +4,7 @@
     --white: #FFFFFF;
     --dark: #222222;
     --accent: #40376E;
+    --current-day: #FFFFFF;
     --border-color: #DCDCDC;
     --not-current-color: #BDBDBD;
     --not-current-bg: #F3F3F3;
@@ -39,11 +40,14 @@ body {
 }
 
 body.darkmode {
-    --white: #222222;
-    --dark: #FFFFFF;
-    --border-color: #323232;
-    --not-current-color: #424242;
-    --not-current-bg: #0C0C0C;
+    --white: #111111;
+    --dark: #DDDDDD;
+    --accent: #5F52A3;
+    --current-day: #DDDDDD;
+    --border-color: #333333;
+    --not-current-color: #777777;
+    --not-current-bg: #222222;
+    --modal-bg: rgba(255, 255, 255, 0.1);
 }
 
 div#dragregion {
@@ -65,7 +69,7 @@ h3 {
 
 .today {
     background-color: var(--accent);
-    color: var(--white) !important;
+    color: var(--current-day) !important;
 }
 
 .notcurrent {
