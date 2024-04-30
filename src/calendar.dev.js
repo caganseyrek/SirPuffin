@@ -134,8 +134,6 @@ function renderCalendar() {
 					dayLabel.classList.add("today");
 					scDayElement.classList.add("today");
 				}
-				//to-do
-				dayElement.addEventListener("click", () => { console.log("test") });
 			}
 			//Check if dayCount went over the selected month's total days
 			if (dayCount > (daysInMonth + paddingDays)) {
@@ -151,14 +149,21 @@ function renderCalendar() {
 				scDayElement.classList.add("scnotcurrent");
 				nextMontDayCount++;
 			}
-			dayCount++;
 			//Append day label and day event to day element
 			dayElement.appendChild(dayLabel);
-			dayElement.appendChild(dayEvents);
+			//Add holidays on current day to day events element
+			holidays.forEach((day) => {
+				const _day = (dayCount - paddingDays).toString();
+				if (day.date.split(" ")[1] === monthString && day.date.split(" ")[0] === _day) {
+					dayEvents.textContent = day.title;
+					dayElement.appendChild(dayEvents);
+				}
+			})
 			//Append day element to the calendar row
 			calendarRow.appendChild(dayElement);
 			//Append day element to small calendar
 			smallCalendarElement.appendChild(scDayElement);
+			dayCount++;
 		}
 		//Append the row to the main calendar
 		calendarElement.appendChild(calendarRow);
