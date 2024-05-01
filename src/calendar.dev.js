@@ -346,11 +346,11 @@ function openModal(modalType, selectedDate, holidayDetails) {
 		firstdaySelector.selectedIndex = currentFirstdayIndex;
 		//Create a row for and append label and selectors
 		const themeOptionRow = document.createElement("div");
-		themeOptionRow.setAttribute("class", "settingsrow");
+		themeOptionRow.setAttribute("class", "modalrow");
 		themeOptionRow.appendChild(themeLabel);
 		themeOptionRow.appendChild(themeSelector);
 		const firstdayOptionRow = document.createElement("div");
-		firstdayOptionRow.setAttribute("class", "settingsrow");
+		firstdayOptionRow.setAttribute("class", "modalrow");
 		firstdayOptionRow.appendChild(firstdayLabel);
 		firstdayOptionRow.appendChild(firstdaySelector);
 		//Create the save button
