@@ -7,11 +7,19 @@
     "electron": "electron src/main.js",
     "vite": "vite"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caganseyrek/SirPuffin.git"
+  },
   "keywords": [
     "calendar"
   ],
   "author": "Çağan Seyrek",
-  "license": "ISC",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/caganseyrek/SirPuffin/issues"
+  },
+  "homepage": "https://github.com/caganseyrek/SirPuffin",
   "devDependencies": {
     "@types/electron": "^1.6.10",
     "electron": "^30.0.0",
