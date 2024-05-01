@@ -294,6 +294,7 @@ div.dayevent {
     line-height: var(--small-line-height);
     padding: 5px;
     box-sizing: border-box;
+    cursor: pointer;
 }
 
 div#modalbackground {
