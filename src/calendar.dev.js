@@ -471,6 +471,7 @@ function loadSettings() {
 	const savedTheme = localStorage.getItem("theme");
 	const savedFirstday = localStorage.getItem("firstday");
 	if (savedTheme === null || savedFirstday === null) {
+		//Create local storage items if there isn't any
 		localStorage.setItem("theme", "Light");
 		localStorage.setItem("firstday", "Monday");
 		currentTheme = "Light";
