@@ -374,7 +374,7 @@ function openModal(modalType, selectedDate, holidayDetails) {
 	if (modalType === "holiday") {
 		const selectedHoliday = holidayDetails;
 		//Setup the title for current modal
-		currentModalTitle.textContent = holidayTitle;
+		currentModalTitle.textContent = selectedHoliday.title;
 		modalTitle.appendChild(currentModalTitle);
 		//Create elements for selected holiday's details
 		const localnameElement = document.createElement("div")

@@ -385,3 +385,13 @@ div#modalcontent {
 .modalrow:not(:first-child) {
     margin: 5px 0px;
 }
+
+.boldtext {
+    font-weight: 800;
+    align-self: flex-start;
+}
+
+.holidayinfo {
+    max-width: 280px;
+    text-align: right;
+}
