@@ -126,6 +126,10 @@ svg path {
     cursor: pointer;
 }
 
+#closebtn {
+    align-self: flex-start;
+}
+
 #jumpaction {
     width: 100%;
 }
