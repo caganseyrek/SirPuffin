@@ -107,10 +107,10 @@ function renderCalendar() {
 		for (let column = 1; column <= 7; column++) {
 			const dayElement = document.createElement("td");
 			const dayLabel = document.createElement("div");
-			const dayEvents = document.createElement("div");
+			const dayEvent = document.createElement("div");
 			const scDayElement = document.createElement("div");
 			dayLabel.classList.add("daylabel");
-			dayEvents.classList.add("dayevent");
+			dayEvent.classList.add("dayevent");
 			scDayElement.classList.add("scday");
 			if (dayCount <= paddingDays) {
 				//Check if we are rendering padding days
@@ -130,7 +130,7 @@ function renderCalendar() {
 					dayLabel.textContent = monthString.slice(0, 3) + " " + (dayCount - paddingDays);
 				}
 				//Highlight the current day
-				if (dayCount === today && currentMonth === monthString && year.toString() === currentYear) {
+				if ((dayCount - paddingDays) === today && currentMonth === monthString && year.toString() === currentYear) {
 					dayLabel.classList.add("today");
 					scDayElement.classList.add("today");
 				}
@@ -155,8 +155,12 @@ function renderCalendar() {
 			holidays.forEach((day) => {
 				const _day = (dayCount - paddingDays).toString();
 				if (day.date.split(" ")[1] === monthString && day.date.split(" ")[0] === _day) {
-					dayEvents.textContent = day.title;
-					dayElement.appendChild(dayEvents);
+					//Set text content as holiday's title
+					dayEvent.textContent = day.title;
+					//Add event listener for holiday modal
+					dayEvent.addEventListener("click", () => { openModal("holiday", day.date, day.title); });
+					//Append day events to day element
+					dayElement.appendChild(dayEvent);
 				}
 			})
 			//Append day element to the calendar row
@@ -214,7 +218,7 @@ function jumpToDate() {
 	//Close the modal after re-renderin the calendar
 	if (modalState) closeModal();
 }
-function openModal(modalType, selectedDate = null) {
+function openModal(modalType, selectedDate = null, holidayTitle = null) {
 	//Create the modal title element
 	const currentModalTitle = document.createElement("h2");
 	//Create the selection grid element for using flexbox
@@ -302,6 +306,12 @@ function openModal(modalType, selectedDate = null) {
 		modalContent.appendChild(themeOptionRow);
 		modalContent.appendChild(firstdayOptionRow);
 		modalContent.appendChild(saveSettingsButton);
+	}
+	if (modalType === "holiday") {
+		//Setup the title for current modal
+		currentModalTitle.textContent = holidayTitle;
+		modalTitle.appendChild(currentModalTitle);
+
 	}
 	if (modalType === "jumpToDate") {
 		//Setup the title for current modal

@@ -3,20 +3,32 @@
 :root {
     --white: #FFFFFF;
     --dark: #222222;
+    
     --accent: #40376E;
+    --holiday-color: #111111;
+    --event-btn-color: #111111;
+    
     --current-day: #FFFFFF;
+    
     --border-color: #DCDCDC;
+    
     --not-current-color: #BDBDBD;
     --not-current-bg: #F3F3F3;
+    
     --modal-bg: rgba(34, 34, 34, 0.25);
+    
     --font-family: "Inter";
-    --line-height: 28px;
+    
+    --line-height: 24px;
+    --small-line-height: 18px;
+
     --letter-spacing: 0.15px;
-    --font-size: 17px;
-    --small-font-size: 14px;
-    --h1-font-size: 34px;
-    --h2-font-size: 26px;
-    --h3-font-size: 17px;
+
+    --font-size: 15px;
+    --h1-font-size: 35px;
+    --h2-font-size: 25px;
+    --h3-font-size: 15px;
+
     --border-radius: 7px;
 }
 
@@ -237,6 +249,9 @@ section#weekdays div {
     width: calc(100% / 7);
     text-align: center;
     font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 table {
@@ -259,21 +274,31 @@ td {
 
 div.daylabel {
     float: right;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: fit-content;
     border-radius: var(--border-radius);
+    font-size: var(--small-font-size);
+    line-height: var(--small-line-height);
     text-align: center;
     margin: 5px;
-    padding: 3px 8px;
+    padding: 5px;
     box-sizing: border-box;
 }
 
 div.dayevent {
-    font-size: var(--small-font-size);
-    line-height: 20px;
-    width: calc(100% - 38px);
     position: absolute;
-    bottom: 0;
-    padding: 10px;
+    bottom: 10px;
+    left: 10px;
+    width: calc(100% - 20px);
+    text-wrap: nowrap;
+    overflow: hidden;
+    border-radius: var(--border-radius);
+    background-color: var(--border-color);
+    font-size: var(--small-font-size);
+    line-height: var(--small-line-height);
+    padding: 5px;
     box-sizing: border-box;
 }
 
