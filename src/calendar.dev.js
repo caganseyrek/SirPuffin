@@ -14,12 +14,76 @@ const weekdaysTurkish = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma"
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 //National holidays
 const holidays = [
-	{ "title": "Yew Year's Day", "date": "1 January" },
-	{ "title": "National Sovereignity and Children's Day", "date": "23 April" },
-	{ "title": "Labour and Solidarity Day", "date": "1 May" },
-	{ "title": "Commemoration of Atatürk, Youth and Sports Day", "date": "19 May" },
-	{ "title": "Victory Day", "date": "30 August" },
-	{ "title": "Republic Day", "date": "29 October" }
+	{
+		"title": "Yew Year's Day",
+		"localname": "(Many translations)",
+		"celebratedin": "Most of the world",
+		"extrainfo": "First day of the new year in Gregorian Calendar",
+		"date": "1 January"
+	},
+	{
+		"title": "Valentine's Day",
+		"localname": "(Many translations)",
+		"celebratedin": "Most of the World",
+		"extrainfo": "A special day when lovers buy each other gifts and send cards in most of the world.",
+		"date": "14 February"
+	},
+	{
+		"title": "International Women's Day",
+		"localname": "(Many translations)",
+		"celebratedin": "Most of the World",
+		"extrainfo": "It is a day dedicated to developing women's political and social consciousness and celebrating their economic, political and social achievements.",
+		"date": "8 March"
+	},
+	{
+		"title": "Çanakkale Victory and Martyrs' Memorial Day",
+		"localname": "Çanakkale Zaferi ve Şehitleri Anma Günü",
+		"celebratedin": "Turkey",
+		"extrainfo": "Commemorating the end of the Çanakkale Naval Battles which ended with the victory of the Ottoman Empire on 18 March 1915 during First World War.",
+		"date": "18 March"
+	},
+	{
+		"title": "National Sovereignity and Children's Day",
+		"localname": "Ulusal Egemenlik ve Çocuk Bayramı",
+		"celebratedin": "Turkey",
+		"extrainfo": "Commemorating the first opening of the Turkish Grand National Assembly in 1920. This day is dedicated to children by Mustafa Kemal Atatürk.",
+		"date": "23 April"
+	},
+	{
+		"title": "International Workers' Day",
+		"localname": "(Many translations)",
+		"celebratedin": "Most of the World",
+		"extrainfo": "Celebrated by most of the world to celebrate the labourers and the working classes.",
+		"date": "1 May"
+	},
+	{
+		"title": "Commemoration of Atatürk, Youth and Sports Day",
+		"localname": "Atatürk'ü Anma, Gençlik ve Spor Bayramı",
+		"celebratedin": "Turkey",
+		"extrainfo": "Commemorating the start of the Turkish National Movement started with Atatürk's landing in Samsun. This day is dedicated to the youth",
+		"date": "19 May"
+	},
+	{
+		"title": "Maritime and Cabotage Day",
+		"localname": "Denizcilik ve Kabotaj Bayramı",
+		"celebratedin": "Turkey",
+		"extrainfo": "It is the annual celebration related to merchant marine rights of Turkey held on 1 July in Turkey",
+		"date": "1 July"
+	},
+	{
+		"title": "Victory Day",
+		"localname": "Zafer Bayramı",
+		"celebratedin": "Turkey",
+		"extrainfo": "Commemorating the victory in the final battle at Dumlupınar, which marked the end of the Turkish War of Independence and the triumph of the Turkish National Movement.",
+		"date": "30 August"
+	},
+	{
+		"title": "Republic Day",
+		"localname": "Cumhuriyet Bayramı",
+		"celebratedin": "Turkey",
+		"extrainfo": "Commemorating the proclamation of the republic in 1929",
+		"date": "29 October"
+	}
 ];
 var currentMonthCounter = 0;
 var currentYearCounter = 0;
@@ -158,7 +222,7 @@ function renderCalendar() {
 					//Set text content as holiday's title
 					dayEvent.textContent = day.title;
 					//Add event listener for holiday modal
-					dayEvent.addEventListener("click", () => { openModal("holiday", day.date, day.title); });
+					dayEvent.addEventListener("click", () => { openModal("holiday", null, day); });
 					//Append day events to day element
 					dayElement.appendChild(dayEvent);
 				}
@@ -218,7 +282,7 @@ function jumpToDate() {
 	//Close the modal after re-renderin the calendar
 	if (modalState) closeModal();
 }
-function openModal(modalType, selectedDate = null, holidayTitle = null) {
+function openModal(modalType, selectedDate, holidayDetails) {
 	//Create the modal title element
 	const currentModalTitle = document.createElement("h2");
 	//Create the selection grid element for using flexbox
@@ -308,10 +372,58 @@ function openModal(modalType, selectedDate = null, holidayTitle = null) {
 		modalContent.appendChild(saveSettingsButton);
 	}
 	if (modalType === "holiday") {
+		const selectedHoliday = holidayDetails;
 		//Setup the title for current modal
 		currentModalTitle.textContent = holidayTitle;
 		modalTitle.appendChild(currentModalTitle);
-
+		//Create elements for selected holiday's details
+		const localnameElement = document.createElement("div")
+		const dateElement = document.createElement("div");
+		const celebratedinElement = document.createElement("div");
+		const extrainfoElement = document.createElement("div");
+		extrainfoElement.setAttribute("class", "holidayinfo");
+		//Add text content to these elements
+		localnameElement.textContent = selectedHoliday.localname;
+		dateElement.textContent = selectedHoliday.date;
+		celebratedinElement.textContent = selectedHoliday.celebratedin;
+		extrainfoElement.textContent = selectedHoliday.extrainfo;
+		//Create rows and labels for these elements
+		const localnameRow = document.createElement("div");
+		const localnameLabel = document.createElement("div");
+		localnameLabel.setAttribute("class", "boldtext");
+		localnameLabel.textContent = "Local Name";
+		localnameRow.setAttribute("class", "modalrow bordertop");
+		localnameRow.appendChild(localnameLabel);
+		localnameRow.appendChild(localnameElement);
+		const dateRow = document.createElement("div");
+		const dateLabel = document.createElement("div");
+		dateLabel.setAttribute("class", "boldtext");
+		dateLabel.textContent = "Date";
+		dateRow.setAttribute("class", "modalrow");
+		dateRow.appendChild(dateLabel);
+		dateRow.appendChild(dateElement);
+		const celebratedinRow = document.createElement("div");
+		const celebratedinLabel = document.createElement("div");
+		celebratedinLabel.setAttribute("class", "boldtext");
+		celebratedinLabel.textContent = "Celebrated in";
+		celebratedinRow.setAttribute("class", "modalrow");
+		celebratedinRow.appendChild(celebratedinLabel);
+		celebratedinRow.appendChild(celebratedinElement);
+		//Append the rows to modal content
+		modalContent.appendChild(localnameRow);
+		modalContent.appendChild(dateRow);
+		modalContent.appendChild(celebratedinRow);
+		//Add extra info element if the variable have one
+		if (selectedHoliday.extrainfo !== null) {
+			const extrainfoRow = document.createElement("div");
+			const extrainfoLabel = document.createElement("div");
+			extrainfoLabel.setAttribute("class", "boldtext");
+			extrainfoLabel.textContent = "Extra information";
+			extrainfoRow.setAttribute("class", "modalrow bordertop");
+			extrainfoRow.appendChild(extrainfoLabel);
+			extrainfoRow.appendChild(extrainfoElement);
+			modalContent.appendChild(extrainfoRow);
+		}
 	}
 	if (modalType === "jumpToDate") {
 		//Setup the title for current modal
