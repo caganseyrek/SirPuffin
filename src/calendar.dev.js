@@ -81,7 +81,7 @@ const holidays = [
 		"title": "Republic Day",
 		"localname": "Cumhuriyet Bayramı",
 		"celebratedin": "Turkey",
-		"extrainfo": "Commemorating the proclamation of the republic in 1929",
+		"extrainfo": "Commemorating the proclamation of the republic in 1923",
 		"date": "29 October"
 	}
 ];
