@@ -370,12 +370,18 @@ div#modalcontent {
     color: var(--not-current-color);
 }
 
-.settingsrow {
+.modalrow {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.settingsrow:not(:first-child) {
+.modalrow.bordertop {
+    border-top: solid 1px var(--border-color);
+    padding-top: 5px;
+    box-sizing: border-box;
+}
+
+.modalrow:not(:first-child) {
     margin: 5px 0px;
 }
