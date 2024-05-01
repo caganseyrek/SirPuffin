@@ -474,8 +474,6 @@ function loadSettings() {
 		//Create local storage items if there isn't any
 		localStorage.setItem("theme", "Light");
 		localStorage.setItem("firstday", "Monday");
-		currentTheme = "Light";
-		currentFirstDay = "Monday";
 	}
 	//Change the theme if current theme isn't the same as saved theme
 	if (currentTheme !== savedTheme) {
