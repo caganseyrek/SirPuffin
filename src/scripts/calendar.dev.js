@@ -1,5 +1,5 @@
 //Import specialdays.json file
-import specialdays from '../data/specialdays.json' assert { type: 'json' };
+import specialdays from "../data/specialdays.json" assert { type: "json" };
 //Calendar elements
 const calendarElement = document.getElementById("calendar");
 const calendarTitle = document.getElementById("calendartitle");
