@@ -215,18 +215,22 @@ function renderCalendar() {
 			}
 			//Append day label and day event to day element
 			dayElement.appendChild(dayLabel);
+			dayElement.appendChild(dayEvent);
 			//Add holidays on current day to day events element
 			holidays.forEach((day) => {
 				const _day = (dayCount - paddingDays).toString();
 				if (day.date.split(" ")[1] === monthString && day.date.split(" ")[0] === _day) {
+					//Create a holiday event
+					const holidayEvent = document.createElement("div");
+					holidayEvent.setAttribute("class", "holidayevent");
 					//Set text content as holiday's title
-					dayEvent.textContent = day.title;
+					holidayEvent.textContent = day.title;
 					//Add event listener for holiday modal
-					dayEvent.addEventListener("click", () => { openModal("holiday", null, day); });
-					//Append day events to day element
-					dayElement.appendChild(dayEvent);
+					holidayEvent.addEventListener("click", () => { openModal("holiday", null, day); });
+					//Append holiday modal to day element
+					dayElement.appendChild(holidayEvent);
 				}
-			})
+			});
 			//Append day element to the calendar row
 			calendarRow.appendChild(dayElement);
 			//Append day element to small calendar
