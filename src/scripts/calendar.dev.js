@@ -451,9 +451,9 @@ function openModal(modalType, selectedDate, holidayDetails) {
 		modalContent.appendChild(selectionGrid);
 	}
 	if (modalType === "newEvent") {
+		const newEventDate = selectedDate;
 		currentModalTitle.textContent = "Add New Event";
 		modalTitle.appendChild(currentModalTitle);
-		const newEventDate = selectedDate;
 		//to-do
 	}
 	//Show the modal

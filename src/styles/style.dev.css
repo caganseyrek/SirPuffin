@@ -4,9 +4,10 @@
     --white: #FFFFFF;
     --dark: #222222;
     --accent: #40376E;
-    --holiday-color: #111111;
-    --event-btn-color: #111111;
-    --current-day: #FFFFFF;
+    --holiday-color: #A0C4E2;
+    --event-btn-color: #5B8E7D;
+    --constant-white: #FFFFFF;
+    --constant-black: #222222;
     --border-color: #DCDCDC;
     --not-current-color: #BDBDBD;
     --not-current-bg: #F3F3F3;
@@ -47,7 +48,8 @@ body.darkmode {
     --white: #111111;
     --dark: #DDDDDD;
     --accent: #5F52A3;
-    --current-day: #DDDDDD;
+    --constant-white: #DDDDDD;
+    --constant-black: #111111;
     --border-color: #333333;
     --not-current-color: #777777;
     --not-current-bg: #222222;
@@ -73,7 +75,7 @@ h3 {
 
 .today {
     background-color: var(--accent);
-    color: var(--current-day) !important;
+    color: var(--constant-white) !important;
 }
 
 .notcurrent {
@@ -281,20 +283,31 @@ div.daylabel {
     box-sizing: border-box;
 }
 
-div.dayevent {
+div.dayevent,
+div.holidayevent {
     position: absolute;
-    bottom: 10px;
-    left: 10px;
     width: calc(100% - 20px);
     text-wrap: nowrap;
     overflow: hidden;
     border-radius: var(--border-radius);
-    background-color: var(--border-color);
     font-size: var(--small-font-size);
     line-height: var(--small-line-height);
     padding: 5px;
     box-sizing: border-box;
     cursor: pointer;
+}
+
+div.dayevent {
+    /*background-color: var(--event-btn-color);*/
+    bottom: 10px;
+    left: 10px;
+}
+
+div.holidayevent {
+    color: var(--constant-black) !important;
+    background-color: var(--holiday-color);
+    bottom: 10px;
+    left: 10px;
 }
 
 div#modalbackground {
