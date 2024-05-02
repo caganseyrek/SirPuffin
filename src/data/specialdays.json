@@ -1,0 +1,72 @@
+[
+	{
+		"title": "Yew Year's Day",
+		"localname": "(Many translations)",
+		"celebratedin": "Most of the world",
+		"extrainfo": "First day of the new year in Gregorian Calendar",
+		"date": "1 January"
+	},
+	{
+		"title": "Valentine's Day",
+		"localname": "(Many translations)",
+		"celebratedin": "Most of the World",
+		"extrainfo": "A special day when lovers buy each other gifts and send cards in most of the world.",
+		"date": "14 February"
+	},
+	{
+		"title": "International Women's Day",
+		"localname": "(Many translations)",
+		"celebratedin": "Most of the World",
+		"extrainfo": "It is a day dedicated to developing women's political and social consciousness and celebrating their economic, political and social achievements.",
+		"date": "8 March"
+	},
+	{
+		"title": "Çanakkale Victory and Martyrs' Memorial Day",
+		"localname": "Çanakkale Zaferi ve Şehitleri Anma Günü",
+		"celebratedin": "Turkey",
+		"extrainfo": "Commemorating the end of the Çanakkale Naval Battles which ended with the victory of the Ottoman Empire on 18 March 1915 during First World War.",
+		"date": "18 March"
+	},
+	{
+		"title": "National Sovereignity and Children's Day",
+		"localname": "Ulusal Egemenlik ve Çocuk Bayramı",
+		"celebratedin": "Turkey",
+		"extrainfo": "Commemorating the first opening of the Turkish Grand National Assembly in 1920. This day is dedicated to children by Mustafa Kemal Atatürk.",
+		"date": "23 April"
+	},
+	{
+		"title": "International Workers' Day",
+		"localname": "(Many translations)",
+		"celebratedin": "Most of the World",
+		"extrainfo": "Celebrated by most of the world to celebrate the labourers and the working classes.",
+		"date": "1 May"
+	},
+	{
+		"title": "Commemoration of Atatürk, Youth and Sports Day",
+		"localname": "Atatürk'ü Anma, Gençlik ve Spor Bayramı",
+		"celebratedin": "Turkey",
+		"extrainfo": "Commemorating the start of the Turkish National Movement started with Atatürk's landing in Samsun. This day is dedicated to the youth",
+		"date": "19 May"
+	},
+	{
+		"title": "Maritime and Cabotage Day",
+		"localname": "Denizcilik ve Kabotaj Bayramı",
+		"celebratedin": "Turkey",
+		"extrainfo": "It is the annual celebration related to merchant marine rights of Turkey held on 1 July in Turkey",
+		"date": "1 July"
+	},
+	{
+		"title": "Victory Day",
+		"localname": "Zafer Bayramı",
+		"celebratedin": "Turkey",
+		"extrainfo": "Commemorating the victory in the final battle at Dumlupınar, which marked the end of the Turkish War of Independence and the triumph of the Turkish National Movement.",
+		"date": "30 August"
+	},
+	{
+		"title": "Republic Day",
+		"localname": "Cumhuriyet Bayramı",
+		"celebratedin": "Turkey",
+		"extrainfo": "Commemorating the proclamation of the republic in 1923",
+		"date": "29 October"
+	}
+]

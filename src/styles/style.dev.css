@@ -3,7 +3,7 @@
 :root {
     --white: #FFFFFF;
     --dark: #222222;
-    --accent: #40376E;
+    --accent: #A0C4E2;
     --holiday-color: #A0C4E2;
     --event-btn-color: #5B8E7D;
     --constant-white: #FFFFFF;
@@ -76,6 +76,9 @@ h3 {
 .today {
     background-color: var(--accent);
     color: var(--constant-white) !important;
+    margin: 5px 2px !important;
+    padding: 5px 8px !important;
+    box-sizing: border-box;
 }
 
 .notcurrent {
@@ -284,7 +287,7 @@ div.daylabel {
 }
 
 div.dayevent,
-div.holidayevent {
+div.specialdayevent {
     position: absolute;
     width: calc(100% - 20px);
     text-wrap: nowrap;
@@ -303,7 +306,7 @@ div.dayevent {
     left: 10px;
 }
 
-div.holidayevent {
+div.specialdayevent {
     color: var(--constant-black) !important;
     background-color: var(--holiday-color);
     bottom: 10px;
@@ -405,7 +408,7 @@ div#modalcontent {
     align-self: flex-start;
 }
 
-.holidayinfo {
+.specialdayinfo {
     max-width: 280px;
     text-align: right;
 }
