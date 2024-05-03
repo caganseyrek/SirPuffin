@@ -35,6 +35,7 @@ body {
     letter-spacing: var(--letter-spacing);
     background-color: var(--white);
     color: var(--dark);
+    user-select: none;
 }
 
 body.darkmode {
@@ -57,13 +58,11 @@ section#titlebar {
     align-items: center;
     justify-content: center;
     color: var(--constant-white);
-    user-select: none;
 }
 
 main {
     display: flex;
     flex-direction: row;
-    user-select: none;
     height: calc(100vh - 38px);
 }
 
