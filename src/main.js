@@ -11,9 +11,9 @@ const createWindow = () => {
         icon: "../assets/icon.png",
         titleBarStyle: "hidden",
         titleBarOverlay: {
-            color: '#FFFFFF',
-            symbolColor: '#222222',
-            height: 61
+            color: '#1F5673',
+            symbolColor: '#DDDDDD',
+            height: 38
         },
         webPreferences: {
             nodeIntegration: true
