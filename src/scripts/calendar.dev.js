@@ -1,5 +1,7 @@
 //Import specialdays.json file
 import specialdays from "../data/specialdays.json" assert { type: "json" };
+//Titlebar title
+const titlebarTitle = document.getElementById("title");
 //Calendar elements
 const calendarElement = document.getElementById("calendar");
 const calendarTitle = document.getElementById("calendartitle");
@@ -20,6 +22,7 @@ var currentYearCounter = 0;
 var modalState = false;
 var currentTheme = "Light";
 var currentFirstDay = "Monday";
+var prevTitlebarTitle = "";
 function renderCalendar() {
 	//Remove elements from previous render
 	calendarElement.textContent = "";
@@ -76,7 +79,8 @@ function renderCalendar() {
 	yearElement.textContent = year.toString();
 	calendarTitle.appendChild(monthElement);
 	calendarTitle.appendChild(yearElement);
-	//Setup document title
+	//Setup document title and topbar title
+	titlebarTitle.textContent = monthString + " " + year.toString() + " - SirPuffin";
 	document.title = monthString + " " + year.toString() + " - SirPuffin";
 	//Setup calendars' headers
 	for (let i = 0; i <= 6; i++) {
@@ -244,6 +248,9 @@ function openModal(modalType, selectedDate, specialdayDetails) {
 	yearInput.setAttribute("class", "modalinput");
 	//Check modal type
 	if (modalType === "settings") {
+		//Setup titlebar title
+		prevTitlebarTitle = titlebarTitle.textContent;
+		titlebarTitle.textContent = "Settings - SirPuffin";
 		//Setup the title for current modal
 		currentModalTitle.textContent = "Settings";
 		modalTitle.appendChild(currentModalTitle);
@@ -295,10 +302,15 @@ function openModal(modalType, selectedDate, specialdayDetails) {
 			//Save values on selectors to localstorage
 			const themeselectorInput = document.getElementById("themeselector").value;
 			const firstdayselectorInput = document.getElementById("firstdayselector").value;
-			localStorage.setItem("theme", themeselectorInput.toString());
-			localStorage.setItem("firstday", firstdayselectorInput.toString());
-			//Load saved settings
-			loadSettings();
+			const _savedTheme = localStorage.getItem("theme");
+			const _savedFirstday = localStorage.getItem("firstday");
+			//Only run save settings function if new values have selected
+			if (themeselectorInput !== _savedTheme || firstdayselectorInput !== _savedFirstday) {	
+				localStorage.setItem("theme", themeselectorInput.toString());
+				localStorage.setItem("firstday", firstdayselectorInput.toString());
+				//Load saved settings
+				loadSettings();
+			}
 		});
 		//Append options to modal content
 		modalContent.appendChild(themeOptionRow);
@@ -321,6 +333,9 @@ function openModal(modalType, selectedDate, specialdayDetails) {
 		dateElement.textContent = selectedSpecialday.date;
 		celebratedinElement.textContent = selectedSpecialday.celebratedin;
 		extrainfoElement.textContent = selectedSpecialday.extrainfo;
+		//Setup titlebar title
+		prevTitlebarTitle = titlebarTitle.textContent;
+		titlebarTitle.textContent = selectedSpecialday.title + " - SirPuffin";
 		//Create rows and labels for these elements
 		const localnameRow = document.createElement("div");
 		const localnameLabel = document.createElement("div");
@@ -350,16 +365,15 @@ function openModal(modalType, selectedDate, specialdayDetails) {
 		//Add extra info element if the variable have one
 		if (selectedSpecialday.extrainfo !== null) {
 			const extrainfoRow = document.createElement("div");
-			const extrainfoLabel = document.createElement("div");
-			extrainfoLabel.setAttribute("class", "boldtext");
-			extrainfoLabel.textContent = "Extra information";
-			extrainfoRow.setAttribute("class", "modalrow bordertop");
-			extrainfoRow.appendChild(extrainfoLabel);
+			extrainfoRow.setAttribute("class", "modalrow bordertop extrainfo");
 			extrainfoRow.appendChild(extrainfoElement);
 			modalContent.appendChild(extrainfoRow);
 		}
 	}
 	if (modalType === "jumpToDate") {
+		//Setup titlebar title
+		prevTitlebarTitle = titlebarTitle.textContent;
+		titlebarTitle.textContent = "Jump to Date - SirPuffin";
 		//Setup the title for current modal
 		currentModalTitle.textContent = "Jump to Date";
 		modalTitle.appendChild(currentModalTitle);
@@ -391,6 +405,7 @@ function openModal(modalType, selectedDate, specialdayDetails) {
 	modalState = true;
 }
 function closeModal() {
+	titlebarTitle.textContent = prevTitlebarTitle;
 	//Remove all error prompts if there is any
 	const errorMessages = modalContainer.querySelectorAll("div.errorprompt");
 	errorMessages.forEach(element => { modalContainer.removeChild(element); });
@@ -440,6 +455,8 @@ function loadSettings() {
 	}
 	//Re-render the calendar
 	renderCalendar();
+	//Close the modal after re-renderin the calendar
+	if (modalState) closeModal();
 }
 function initButtons() {
 	//Increase the month counter by 1 and re-render the calendar

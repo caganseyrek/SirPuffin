@@ -3,11 +3,8 @@
 :root {
     --white: #FFFFFF;
     --dark: #222222;
-    --accent: #A0C4E2;
-    --holiday-color: #A0C4E2;
-    --event-btn-color: #5B8E7D;
+    --accent: #1F5673;
     --constant-white: #FFFFFF;
-    --constant-black: #222222;
     --border-color: #DCDCDC;
     --not-current-color: #BDBDBD;
     --not-current-bg: #F3F3F3;
@@ -17,8 +14,8 @@
     --small-line-height: 18px;
     --letter-spacing: 0.15px;
     --font-size: 15px;
-    --h1-font-size: 35px;
-    --h2-font-size: 25px;
+    --h1-font-size: 27.50px;
+    --h2-font-size: 21.25px;
     --h3-font-size: 15px;
     --border-radius: 7px;
 }
@@ -38,31 +35,36 @@ body {
     letter-spacing: var(--letter-spacing);
     background-color: var(--white);
     color: var(--dark);
-    display: flex;
-    flex-direction: row;
-    user-select: none;
 }
 
 body.darkmode {
     color-scheme: dark;
     --white: #111111;
     --dark: #DDDDDD;
-    --accent: #5F52A3;
     --constant-white: #DDDDDD;
-    --constant-black: #111111;
     --border-color: #333333;
     --not-current-color: #777777;
     --not-current-bg: #222222;
     --modal-bg: rgba(255, 255, 255, 0.1);
 }
 
-div#dragregion {
+section#titlebar {
     -webkit-app-region: drag;
-    position: fixed;
-    left: 0px;
-    display: block;
+    background-color: var(--accent);
     width: 100vw;
-    height: 20px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--constant-white);
+    user-select: none;
+}
+
+main {
+    display: flex;
+    flex-direction: row;
+    user-select: none;
+    height: calc(100vh - 38px);
 }
 
 h1,
@@ -151,7 +153,7 @@ section#sidebar {
     display: flex;
     flex-direction: column;
     row-gap: 20px;
-    height: 100vh;
+    height: calc(100vh - 38px);
 }
 
 section#sidebar h3 {
@@ -200,20 +202,6 @@ section#content {
     width: calc(100vw - 280px);
 }
 
-section#topbar {
-    padding: 20px;
-    box-sizing: border-box;
-    border-left: solid 1px var(--border-color);
-    justify-content: space-between;
-}
-
-section#topbar div {
-    column-gap: 5px;
-    margin-right: 117px;
-}
-
-section#topbar,
-section#topbar div,
 section#weekdays,
 div#controls {
     display: flex;
@@ -221,18 +209,18 @@ div#controls {
     justify-self: center;
 }
 
-section#topbar h1 {
+div h1#calendartitle {
     font-size: var(--h1-font-size);
     font-weight: normal;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
     column-gap: 10px;
 }
 
-section#topbar h1,
-section#topbar h1 span,
-section#topbar h1 b {
+div h1#calendartitle,
+div h1#calendartitle span,
+div h1#calendartitle b {
     line-height: 38px;
     height: 38px;
     box-sizing: border-box;
@@ -240,11 +228,10 @@ section#topbar h1 b {
 
 section#weekdays {
     border-left: solid 1px var(--border-color);
-    border-top: solid 1px var(--border-color);
 }
 
 section#weekdays div {
-    height: 28px;
+    height: 38px;
     width: calc(100% / 7);
     text-align: center;
     font-weight: 600;
@@ -255,7 +242,7 @@ section#weekdays div {
 
 table {
     width: 100%;
-    height: calc(100% - 107px);
+    height: calc(100% - 39px);
     border-collapse: collapse;
 }
 
@@ -268,6 +255,7 @@ td {
     width: calc(100% / 7);
     height: calc((100% - 28px) / 7);
     border: solid 1px var(--border-color);
+    border-right: 0px;
     position: relative;
 }
 
@@ -307,8 +295,7 @@ div.dayevent {
 }
 
 div.specialdayevent {
-    color: var(--constant-black) !important;
-    background-color: var(--holiday-color);
+    background-color: var(--border-color);
     bottom: 10px;
     left: 10px;
 }
@@ -320,9 +307,9 @@ div#modalbackground {
     position: fixed;
     z-index: 1;
     left: 0;
-    top: 0;
+    top: 38px;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 38px);
     overflow: auto;
     background-color: var(--modal-bg);
 }
@@ -399,6 +386,10 @@ div#modalcontent {
     box-sizing: border-box;
 }
 
+.modalrow.bordertop.extrainfo {
+    padding-top: 20px !important;
+}
+
 .modalrow:not(:first-child) {
     margin: 5px 0px;
 }
@@ -406,9 +397,4 @@ div#modalcontent {
 .boldtext {
     font-weight: 800;
     align-self: flex-start;
-}
-
-.specialdayinfo {
-    max-width: 280px;
-    text-align: right;
 }
