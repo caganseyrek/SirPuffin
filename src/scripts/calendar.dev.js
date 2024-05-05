@@ -1,5 +1,5 @@
 //Import specialdays and saved events
-import specialdays from "../data/specialdays.json" assert { type: "json" };
+import specialdays from "../data/specialdays.json" with { type: "json" };
 var savedEvents = localStorage.getItem("savedEvents") ? JSON.parse(localStorage.getItem("savedEvents")) : [];
 //Titlebar title
 const titlebarTitle = document.getElementById("title");
@@ -129,7 +129,7 @@ function renderCalendar() {
 				//Highlight the current day
 				if ((dayCount - paddingDays) === today && currentMonth === monthString && year.toString() === currentYear) {
 					dayLabel.classList.add("today");
-					scDayElement.classList.add("today");
+					scDayElement.classList.add("sctoday");
 				}
 			}
 			//Check if dayCount went over the selected month's total days

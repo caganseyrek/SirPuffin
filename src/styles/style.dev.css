@@ -82,6 +82,12 @@ h3 {
     box-sizing: border-box;
 }
 
+.sctoday {
+    background-color: var(--accent);
+    color: var(--constant-white) !important;
+    box-sizing: border-box;
+}
+
 .notcurrent {
     color: var(--not-current-color) !important;
     background-color: var(--not-current-bg);
