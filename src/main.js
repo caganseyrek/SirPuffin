@@ -1,5 +1,4 @@
 const { app, BrowserWindow } = require('electron');
-const path = require('node:path');
 
 const createWindow = () => {
     const window = new BrowserWindow({
@@ -9,7 +8,7 @@ const createWindow = () => {
         minHeight: 650,
         frame: false,
         autoHideMenuBar: true,
-        icon: "../assets/icon.png",
+        icon: "assets/icon.png",
         titleBarStyle: "hidden",
         titleBarOverlay: {
             color: '#1F5673',
@@ -20,7 +19,6 @@ const createWindow = () => {
             nodeIntegration: true
         }
     });
-    window.setIcon("./assets/icon.png");
     window.loadFile('./index.html');
     //For "npm run electron" command, use the line below instead
     //window.loadFile('../index.html');
