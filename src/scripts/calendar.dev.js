@@ -1,5 +1,6 @@
-//Import specialdays.json file
+//Import specialdays and saved events
 import specialdays from "../data/specialdays.json" assert { type: "json" };
+var savedEvents = localStorage.getItem("savedEvent") ? JSON.parse(localStorage.getItem("savedEvent")) : [];
 //Titlebar title
 const titlebarTitle = document.getElementById("title");
 //Calendar elements
@@ -149,21 +150,48 @@ function renderCalendar() {
 			}
 			//Append day label and day event to day element
 			dayElement.appendChild(dayLabel);
-			dayElement.appendChild(dayEvent);
+			//dayElement.appendChild(dayEvent);
 			//Add specialdays on current day to day events element
+			var dayHasSpecialDay = false;
+			const specialdayEvent = document.createElement("div");
 			specialdays.forEach((day) => {
 				const _day = (dayCount - paddingDays).toString();
 				if (day.date.split(" ")[1] === monthString && day.date.split(" ")[0] === _day) {
 					//Create a specialday event
-					const specialdayEvent = document.createElement("div");
 					specialdayEvent.setAttribute("class", "specialdayevent");
 					//Set text content as specialday's title
 					specialdayEvent.textContent = day.title;
 					//Add event listener for specialday modal
-					specialdayEvent.addEventListener("click", () => { openModal("specialday", null, day); });
+					specialdayEvent.addEventListener("click", (event) => {
+						if (event.target === specialdayEvent) openModal("specialDay", null, day);
+					});
 					//Append specialday modal to day element
 					dayElement.appendChild(specialdayEvent);
+					dayHasSpecialDay = true;
 				}
+			});
+			var hasEvent = false;
+			savedEvents.forEach((day) => {
+				const _day = (dayCount - paddingDays).toString();
+				if (day.date.split(" ")[1] === monthString && day.date.split(" ")[0] === _day) {
+					//Create a specialday event
+					const dayEvent = document.createElement("div");
+					dayEvent.setAttribute("class", "dayevent");
+					if (dayHasSpecialDay) {
+						dayEvent.setAttribute("class", "dayevent repositioned");
+					}
+					//Set text content as specialday's title
+					dayEvent.textContent = day.title;
+					//Add event listener for specialday modal
+					const dayDetails = [day.title, day.desc];
+					dayEvent.addEventListener("click", () => { openModal("viewDay", day.date, dayDetails); });
+					//Append specialday modal to day element
+					dayElement.appendChild(dayEvent);
+					hasEvent = true;
+				}
+			});
+			hasEvent ? "" : dayElement.addEventListener("click", (event) => {
+				if (event.target !== specialdayEvent) openModal("newDayDetails", (dayLabel.textContent + " " + monthString), null);
 			});
 			//Append day element to the calendar row
 			calendarRow.appendChild(dayElement);
@@ -173,11 +201,7 @@ function renderCalendar() {
 		}
 		//Append the row to the main calendar
 		calendarElement.appendChild(calendarRow);
-		renderEvents();
 	}
-}
-function renderEvents() {
-	// to-do
 }
 function jumpToDate() {
 	const yearInputValue = document.getElementById("jumpyearinput");
@@ -220,32 +244,12 @@ function jumpToDate() {
 	//Close the modal after re-renderin the calendar
 	if (modalState) closeModal();
 }
-function openModal(modalType, selectedDate, specialdayDetails) {
+function openModal(modalType, selectedDate, dayDetails) {
 	//Create the modal title element
 	const currentModalTitle = document.createElement("h2");
 	//Create the selection grid element for using flexbox
 	const selectionGrid = document.createElement("div");
 	selectionGrid.setAttribute("id", "dateselectiongrid");
-	//Create the month selector dropdown
-	const monthSelector = document.createElement("select");
-	monthSelector.setAttribute("class", "dropdown");
-	for (let month = 0; month < 12; month++) {
-		const _year = new Date().getFullYear();
-		//Get month as a string from the date
-		const currentIterationMonth = new Date(_year, month).toLocaleTimeString("en-uk", { month: "long" });
-		//Create an option for that month to append to selector
-		const monthSelectorOption = document.createElement("option");
-		monthSelectorOption.textContent = currentIterationMonth.split(" ")[0];
-		monthSelector.appendChild(monthSelectorOption);
-	}
-	//Create the day input
-	const dayInput = document.createElement("input");
-	dayInput.setAttribute("type", "number");
-	dayInput.setAttribute("class", "modalinput");
-	//Create the year input
-	const yearInput = document.createElement("input");
-	yearInput.setAttribute("type", "number");
-	yearInput.setAttribute("class", "modalinput");
 	//Check modal type
 	if (modalType === "settings") {
 		//Setup titlebar title
@@ -257,6 +261,8 @@ function openModal(modalType, selectedDate, specialdayDetails) {
 		//Create setting labels
 		const themeLabel = document.createElement("span");
 		const firstdayLabel = document.createElement("span");
+		themeLabel.setAttribute("class", "inputlabel");
+		firstdayLabel.setAttribute("class", "inputlabel");
 		themeLabel.textContent = "Calendar Theme";
 		firstdayLabel.textContent = "First Day of the Week";
 		//Create theme selector
@@ -305,7 +311,7 @@ function openModal(modalType, selectedDate, specialdayDetails) {
 			const _savedTheme = localStorage.getItem("theme");
 			const _savedFirstday = localStorage.getItem("firstday");
 			//Only run save settings function if new values have selected
-			if (themeselectorInput !== _savedTheme || firstdayselectorInput !== _savedFirstday) {	
+			if (themeselectorInput !== _savedTheme || firstdayselectorInput !== _savedFirstday) {
 				localStorage.setItem("theme", themeselectorInput.toString());
 				localStorage.setItem("firstday", firstdayselectorInput.toString());
 				//Load saved settings
@@ -317,8 +323,8 @@ function openModal(modalType, selectedDate, specialdayDetails) {
 		modalContent.appendChild(firstdayOptionRow);
 		modalContent.appendChild(saveSettingsButton);
 	}
-	if (modalType === "specialday") {
-		const selectedSpecialday = specialdayDetails;
+	if (modalType === "specialDay") {
+		const selectedSpecialday = dayDetails;
 		//Setup the title for current modal
 		currentModalTitle.textContent = selectedSpecialday.title;
 		modalTitle.appendChild(currentModalTitle);
@@ -377,6 +383,26 @@ function openModal(modalType, selectedDate, specialdayDetails) {
 		//Setup the title for current modal
 		currentModalTitle.textContent = "Jump to Date";
 		modalTitle.appendChild(currentModalTitle);
+		//Create the month selector dropdown
+		const monthSelector = document.createElement("select");
+		monthSelector.setAttribute("class", "dropdown");
+		for (let month = 0; month < 12; month++) {
+			const _year = new Date().getFullYear();
+			//Get month as a string from the date
+			const currentIterationMonth = new Date(_year, month).toLocaleTimeString("en-uk", { month: "long" });
+			//Create an option for that month to append to selector
+			const monthSelectorOption = document.createElement("option");
+			monthSelectorOption.textContent = currentIterationMonth.split(" ")[0];
+			monthSelector.appendChild(monthSelectorOption);
+		}
+		//Create the day input
+		const dayInput = document.createElement("input");
+		dayInput.setAttribute("type", "number");
+		dayInput.setAttribute("class", "modalinput");
+		//Create the year input
+		const yearInput = document.createElement("input");
+		yearInput.setAttribute("type", "number");
+		yearInput.setAttribute("class", "modalinput");
 		//Set year input as current year
 		yearInput.value = new Date().getFullYear();
 		//Create and setup the jump action button
@@ -394,12 +420,81 @@ function openModal(modalType, selectedDate, specialdayDetails) {
 		//Append selection grid to modal content
 		modalContent.appendChild(selectionGrid);
 	}
-	if (modalType === "newEvent") {
-		const newEventDate = selectedDate;
-		currentModalTitle.textContent = "Add New Event";
+	if (modalType === "viewDay" || modalType === "newDayDetails") {
+		//Setup titlebar title
+		prevTitlebarTitle = titlebarTitle.textContent;
+		if (modalType === "viewDay") {
+			titlebarTitle.textContent = "Events on " + selectedDate + " - SirPuffin";
+		} else {
+			titlebarTitle.textContent = "Add new event on " + selectedDate + " - SirPuffin";
+		}
+		const fullDateOfSelectedDay = selectedDate + " " + new Date().getFullYear();
+		//Setup the title for current modal
+		currentModalTitle.textContent = selectedDate;
 		modalTitle.appendChild(currentModalTitle);
-		//to-do
-	}
+		//Setup the day title row, label and input
+		const dayTitleRow = document.createElement("div");
+		dayTitleRow.setAttribute("class", "modalrow");
+		const dayTitleLabel = document.createElement("span");
+		dayTitleLabel.setAttribute("class", "inputlabel");
+		dayTitleLabel.textContent = "Day Title";
+		const dayTitleInput = document.createElement("input");
+		dayTitleInput.setAttribute("id", "daytitleinput");
+		dayTitleInput.setAttribute("class", "modalinput wideinput");
+		//Setup the day description row, label and textarea
+		const dayDescRow = document.createElement("div");
+		dayDescRow.setAttribute("class", "modalrow");
+		const dayDescLabel = document.createElement("span");
+		dayDescLabel.setAttribute("class", "boldtext desc");
+		dayDescLabel.textContent = "Day Description";
+		const dayDescInput = document.createElement("textarea");
+		dayDescInput.setAttribute("id", "daydescinput");
+		dayDescInput.setAttribute("class", "modalinput desctext");
+		if (modalType === "viewDay") {
+			dayTitleInput.value = dayDetails[0];
+			dayDescInput.value = dayDetails[1];
+		}
+		//Append elements to the rows
+		dayTitleRow.appendChild(dayTitleLabel);
+		dayTitleRow.appendChild(dayTitleInput);
+		dayDescRow.appendChild(dayDescLabel);
+		dayDescRow.appendChild(dayDescInput);
+		//Setup the save button
+		const saveEventButton = document.createElement("a");
+		saveEventButton.setAttribute("id", "dayeventaction");
+		saveEventButton.textContent = "Save Day Details";
+		saveEventButton.addEventListener("click", () => {
+			//Save values on selectors to localstorage
+			savedEvents = localStorage.getItem("savedEvents") ? JSON.parse(localStorage.getItem("savedEvents")) : [];
+			const dayTitleInputValue = document.getElementById("daytitleinput").value;
+			const dayDescInputValue = document.getElementById("daydescinput").value;
+			//Remove the existing values if the day already has an event
+			if (modalType === "viewDay") {
+				var _tempSavedEvents = [];
+				savedEvents.forEach((day) => {
+					//Save each saved event but selected day's event to temporary variable
+					if (day.date !== fullDateOfSelectedDay) _tempSavedEvents.push(day);
+				});
+				savedEvents = _tempSavedEvents;
+			}
+			//Create and object with new values
+			const newValues = {
+				"title": dayTitleInputValue,
+				"date": fullDateOfSelectedDay,
+				"desc": dayDescInputValue
+			}
+			//Add the new values to saved events and save the events to local storage
+			savedEvents.push(newValues);
+			localStorage.setItem("savedEvents", JSON.stringify(savedEvents));
+			//Re-render the calendar
+			renderCalendar();
+			if (modalState) closeModal();
+		});
+		//Append elements to modal content
+		modalContent.appendChild(dayTitleRow);
+		modalContent.appendChild(dayDescRow);
+		modalContent.appendChild(saveEventButton);
+	};
 	//Show the modal
 	modalBackground.style.display = "flex";
 	modalState = true;

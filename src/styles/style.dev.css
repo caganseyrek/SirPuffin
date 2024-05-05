@@ -111,6 +111,7 @@ svg path {
     cursor: pointer;
 }
 
+#dayeventaction,
 #jumpbtn,
 #jumpaction,
 #settingsbtn,
@@ -288,9 +289,14 @@ div.specialdayevent {
 }
 
 div.dayevent {
-    /*background-color: var(--event-btn-color);*/
+    background-color: var(--accent);
+    color: var(--constant-white);
     bottom: 10px;
     left: 10px;
+}
+
+div.dayevent.repositioned {
+    bottom: 43px;
 }
 
 div.specialdayevent {
@@ -368,6 +374,16 @@ div#modalcontent {
     width: calc((100% - 5px) / 2);
 }
 
+.modalinput.wideinput,
+.modalinput.desctext {
+    width: calc((100% - 5px) * (2 / 3)) !important;
+}
+
+.modalinput.desctext {
+    resize: none;
+    height: 200px;
+}
+
 .errorprompt {
     text-align: center;
     color: var(--not-current-color);
@@ -393,7 +409,17 @@ div#modalcontent {
     margin: 5px 0px;
 }
 
+.inputlabel {
+    font-weight: 800;
+    align-self: center;
+}
+
 .boldtext {
     font-weight: 800;
     align-self: flex-start;
+}
+
+.boldtext.desc {
+    padding-top: 7px;
+    box-sizing: border-box;
 }
