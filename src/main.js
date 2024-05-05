@@ -1,4 +1,5 @@
 const { app, BrowserWindow } = require('electron');
+const path = require('node:path');
 
 const createWindow = () => {
     const window = new BrowserWindow({
@@ -18,8 +19,10 @@ const createWindow = () => {
         webPreferences: {
             nodeIntegration: true
         }
-    })
-    window.loadFile('../index.html')
+    });
+    window.loadFile('./index.html');
+    //For "npm run electron" command, use the line below instead
+    //window.loadFile('../index.html');
 }
 
 app.whenReady().then(() => { createWindow() })
