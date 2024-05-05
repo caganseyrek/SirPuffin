@@ -385,6 +385,7 @@ div#modalcontent {
 }
 
 .errorprompt {
+    margin-top: 10px;
     text-align: center;
     color: var(--not-current-color);
 }
@@ -422,4 +423,8 @@ div#modalcontent {
 .boldtext.desc {
     padding-top: 7px;
     box-sizing: border-box;
+}
+
+.margintop {
+    margin-top: 5px;
 }

@@ -1,6 +1,6 @@
 //Import specialdays and saved events
 import specialdays from "../data/specialdays.json" assert { type: "json" };
-var savedEvents = localStorage.getItem("savedEvent") ? JSON.parse(localStorage.getItem("savedEvent")) : [];
+var savedEvents = localStorage.getItem("savedEvents") ? JSON.parse(localStorage.getItem("savedEvents")) : [];
 //Titlebar title
 const titlebarTitle = document.getElementById("title");
 //Calendar elements
@@ -106,10 +106,8 @@ function renderCalendar() {
 		for (let column = 1; column <= 7; column++) {
 			const dayElement = document.createElement("td");
 			const dayLabel = document.createElement("div");
-			const dayEvent = document.createElement("div");
 			const scDayElement = document.createElement("div");
 			dayLabel.classList.add("daylabel");
-			dayEvent.classList.add("dayevent");
 			scDayElement.classList.add("scday");
 			if (dayCount <= paddingDays) {
 				//Check if we are rendering padding days
@@ -126,7 +124,7 @@ function renderCalendar() {
 				scDayElement.textContent = (dayCount - paddingDays).toString();
 				//Add the first 3 letters of the current month's name in front of the first day
 				if ((dayCount - paddingDays) === 1) {
-					dayLabel.textContent = monthString.slice(0, 3) + " " + (dayCount - paddingDays);
+					dayLabel.textContent = (dayCount - paddingDays).toString();
 				}
 				//Highlight the current day
 				if ((dayCount - paddingDays) === today && currentMonth === monthString && year.toString() === currentYear) {
@@ -148,51 +146,48 @@ function renderCalendar() {
 				scDayElement.classList.add("scnotcurrent");
 				nextMontDayCount++;
 			}
+			if (!dayElement.classList.contains("notcurrent")) {
+				//Declare control values
+				const _day = (dayCount - paddingDays).toString();
+				var dayHasSpecialDay = false;
+				var hasEvent = false;
+				//Create a day and specialday events
+				const specialdayEvent = document.createElement("div");
+				const dayEvent = document.createElement("div");
+				specialdays.forEach((day) => {
+					if (day.date.split(" ")[1] === monthString && day.date.split(" ")[0] === _day) {
+						specialdayEvent.setAttribute("class", "specialdayevent");
+						//Set text content as specialday's title
+						specialdayEvent.textContent = day.title;
+						//Add event listener for specialday modal
+						specialdayEvent.addEventListener("click", (event) => {
+							if (event.target === specialdayEvent) openModal("specialDay", null, day);
+						});
+						//Append specialday modal to day element
+						dayElement.appendChild(specialdayEvent);
+						dayHasSpecialDay = true;
+					}
+				});
+				savedEvents.forEach((day) => {
+					if (day.date.split(" ")[2] === year.toString() && day.date.split(" ")[1] === monthString && day.date.split(" ")[0] === _day) {
+						dayEvent.setAttribute("class", "dayevent");
+						//Set text content as day event's title
+						dayEvent.textContent = day.title;
+						if (dayHasSpecialDay) { dayEvent.setAttribute("class", "dayevent repositioned"); }
+						//Add event listener for day event modal
+						const dayDetails = [day.title, day.desc];
+						dayEvent.addEventListener("click", () => { openModal("viewDay", day.date, dayDetails); });
+						//Append day event modal to day element
+						dayElement.appendChild(dayEvent);
+						hasEvent = true;
+					}
+				});
+				hasEvent ? "" : dayElement.addEventListener("click", (event) => {
+					if (event.target !== specialdayEvent) openModal("newDayDetails", (dayLabel.textContent + " " + monthString), null);
+				});
+			}
 			//Append day label and day event to day element
 			dayElement.appendChild(dayLabel);
-			//dayElement.appendChild(dayEvent);
-			//Add specialdays on current day to day events element
-			var dayHasSpecialDay = false;
-			const specialdayEvent = document.createElement("div");
-			specialdays.forEach((day) => {
-				const _day = (dayCount - paddingDays).toString();
-				if (day.date.split(" ")[1] === monthString && day.date.split(" ")[0] === _day) {
-					//Create a specialday event
-					specialdayEvent.setAttribute("class", "specialdayevent");
-					//Set text content as specialday's title
-					specialdayEvent.textContent = day.title;
-					//Add event listener for specialday modal
-					specialdayEvent.addEventListener("click", (event) => {
-						if (event.target === specialdayEvent) openModal("specialDay", null, day);
-					});
-					//Append specialday modal to day element
-					dayElement.appendChild(specialdayEvent);
-					dayHasSpecialDay = true;
-				}
-			});
-			var hasEvent = false;
-			savedEvents.forEach((day) => {
-				const _day = (dayCount - paddingDays).toString();
-				if (day.date.split(" ")[1] === monthString && day.date.split(" ")[0] === _day) {
-					//Create a specialday event
-					const dayEvent = document.createElement("div");
-					dayEvent.setAttribute("class", "dayevent");
-					if (dayHasSpecialDay) {
-						dayEvent.setAttribute("class", "dayevent repositioned");
-					}
-					//Set text content as specialday's title
-					dayEvent.textContent = day.title;
-					//Add event listener for specialday modal
-					const dayDetails = [day.title, day.desc];
-					dayEvent.addEventListener("click", () => { openModal("viewDay", day.date, dayDetails); });
-					//Append specialday modal to day element
-					dayElement.appendChild(dayEvent);
-					hasEvent = true;
-				}
-			});
-			hasEvent ? "" : dayElement.addEventListener("click", (event) => {
-				if (event.target !== specialdayEvent) openModal("newDayDetails", (dayLabel.textContent + " " + monthString), null);
-			});
 			//Append day element to the calendar row
 			calendarRow.appendChild(dayElement);
 			//Append day element to small calendar
@@ -421,16 +416,23 @@ function openModal(modalType, selectedDate, dayDetails) {
 		modalContent.appendChild(selectionGrid);
 	}
 	if (modalType === "viewDay" || modalType === "newDayDetails") {
+		//Setup the year in selected date string
+		var yearValueCheck = selectedDate.split(" ");
+		var fullDateOfSelectedDay;
+		if (yearValueCheck.length === 2) {
+			fullDateOfSelectedDay = selectedDate + " " + new Date().getFullYear();
+		} else {
+			fullDateOfSelectedDay = selectedDate;
+		}
 		//Setup titlebar title
 		prevTitlebarTitle = titlebarTitle.textContent;
 		if (modalType === "viewDay") {
 			titlebarTitle.textContent = "Events on " + selectedDate + " - SirPuffin";
 		} else {
-			titlebarTitle.textContent = "Add new event on " + selectedDate + " - SirPuffin";
+			titlebarTitle.textContent = "Add new event - SirPuffin";
 		}
-		const fullDateOfSelectedDay = selectedDate + " " + new Date().getFullYear();
 		//Setup the title for current modal
-		currentModalTitle.textContent = selectedDate;
+		currentModalTitle.textContent = fullDateOfSelectedDay;
 		modalTitle.appendChild(currentModalTitle);
 		//Setup the day title row, label and input
 		const dayTitleRow = document.createElement("div");
@@ -468,12 +470,22 @@ function openModal(modalType, selectedDate, dayDetails) {
 			savedEvents = localStorage.getItem("savedEvents") ? JSON.parse(localStorage.getItem("savedEvents")) : [];
 			const dayTitleInputValue = document.getElementById("daytitleinput").value;
 			const dayDescInputValue = document.getElementById("daydescinput").value;
+			const errorMessages = modalContainer.querySelectorAll("div.errorprompt");
+			errorMessages.forEach(element => { modalContainer.removeChild(element); });
+			if (dayTitleInputValue === "") {
+				//Show an error propmt if no year value is given
+				const errorMessage = document.createElement("div");
+				errorMessage.classList.add("errorprompt");
+				errorMessage.textContent = "Day title cannot be empty. Please try again.";
+				modalContainer.append(errorMessage);
+				return;
+			}
 			//Remove the existing values if the day already has an event
 			if (modalType === "viewDay") {
 				var _tempSavedEvents = [];
 				savedEvents.forEach((day) => {
 					//Save each saved event but selected day's event to temporary variable
-					if (day.date !== fullDateOfSelectedDay) _tempSavedEvents.push(day);
+					if (day.date.toString() !== fullDateOfSelectedDay) _tempSavedEvents.push(day);
 				});
 				savedEvents = _tempSavedEvents;
 			}
@@ -490,10 +502,32 @@ function openModal(modalType, selectedDate, dayDetails) {
 			renderCalendar();
 			if (modalState) closeModal();
 		});
+		//Setup the delete button
+		const deleteEventButton = document.createElement("a");
+		deleteEventButton.setAttribute("id", "dayeventaction");
+		deleteEventButton.setAttribute("class", "margintop");
+		deleteEventButton.textContent = "Delete Day Details";
+		deleteEventButton.addEventListener("click", () => {
+			savedEvents = localStorage.getItem("savedEvents") ? JSON.parse(localStorage.getItem("savedEvents")) : [];
+			//Remove the existing values of the day's events
+			if (modalType === "viewDay") {
+				var _tempSavedEvents = [];
+				savedEvents.forEach((day) => {
+					//Save each saved event but selected day's event to temporary variable
+					if (day.date.toString() !== fullDateOfSelectedDay) _tempSavedEvents.push(day);
+				});
+				savedEvents = _tempSavedEvents;
+			}
+			localStorage.setItem("savedEvents", JSON.stringify(savedEvents));
+			//Re-render the calendar
+			renderCalendar();
+			if (modalState) closeModal();
+		});
 		//Append elements to modal content
 		modalContent.appendChild(dayTitleRow);
 		modalContent.appendChild(dayDescRow);
 		modalContent.appendChild(saveEventButton);
+		if (modalType === "viewDay") { modalContent.appendChild(deleteEventButton); }
 	};
 	//Show the modal
 	modalBackground.style.display = "flex";
@@ -600,5 +634,4 @@ window.onload = () => {
 	renderCalendar();
 	initButtons();
 	initShortcuts();
-	//openModal("newEvent");
 }
