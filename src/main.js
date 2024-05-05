@@ -20,6 +20,7 @@ const createWindow = () => {
             nodeIntegration: true
         }
     });
+    window.setIcon("./assets/icon.png");
     window.loadFile('./index.html');
     //For "npm run electron" command, use the line below instead
     //window.loadFile('../index.html');
