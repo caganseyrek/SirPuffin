@@ -1,6 +1,6 @@
 # SirPuffin Calendar
 
-SirPuffin is a lightweight, cross-platform calendar made with vanilla JavaScript using ElectronsJS Framework.
+SirPuffin is a easy-to-use, cross-platform calendar app made with vanilla JavaScript using ElectronsJS Framework.
 
 ---
 
@@ -16,6 +16,16 @@ SirPuffin is a lightweight, cross-platform calendar made with vanilla JavaScript
     npm run vite #runs in browser
     npm run electron #runs with electron
     ```
+
+---
+
+## Creating an executable file
+
+ 1. After, installing or cloning the project, run the electron-forge command:
+    ```bash
+    npm run make
+    ```
+ 3. The executable file will be located in `out/` directory.
 
 ---
 
