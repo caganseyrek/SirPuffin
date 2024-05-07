@@ -2,6 +2,8 @@
 
 SirPuffin is a easy-to-use, cross-platform calendar app made with vanilla JavaScript using ElectronsJS Framework.
 
+![Preview](/assets/preview.png)
+
 ---
 
 ## Running the App Locally
