@@ -1,3 +1,5 @@
+<img src="/assets/icon.png" width="100" height="100" />
+
 # SirPuffin Calendar
 
 SirPuffin is a easy-to-use, cross-platform calendar app made with vanilla JavaScript using ElectronsJS Framework.
